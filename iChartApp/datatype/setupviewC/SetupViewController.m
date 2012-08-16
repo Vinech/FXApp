@@ -11,6 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ProductSelectViewController.h"
 #import "FileSelectViewController.h"
+#import "MAlertView.h"
 #define kWBSDKDemoAppKey @"2131365630"
 #define kWBSDKDemoAppSecret @"9ccde1899c528308145342904dfb7b18"
 
@@ -87,19 +88,19 @@
     }
     
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
-    array1 = [NSArray arrayWithObjects:@"密码修改",@"界面风格",@"字体",@"产品",@"字段",@"是否推送",@"合作",@"微博",@"Log Out", nil];
+    array1 = [NSArray arrayWithObjects:@"密码修改",@"界面风格",@"字体",@"是否推送",@"合作",@"微博",@"Log Out", nil];
     
-    NSArray * array4 = [NSArray arrayWithObjects:@"旧密码",@"新密码",@"确认信密码", nil];//密码修改0
+    NSArray * array4 = [NSArray arrayWithObjects:@"密码修改",nil];//密码修改0
     NSArray * array5 = [NSArray arrayWithObjects:@"Bright",@"Dark", nil];//界面风格1
     NSArray * array6 = [NSArray arrayWithObjects:@"字体",nil];//字体2
-    NSArray * array7 = [NSArray arrayWithObjects:@"产品",nil];//产品3
-    NSArray * array8 = [NSArray arrayWithObjects:@"字段",nil];//字段4
+//    NSArray * array7 = [NSArray arrayWithObjects:@"产品",nil];//产品3
+//    NSArray * array8 = [NSArray arrayWithObjects:@"字段",nil];//字段4
     NSArray * array9 = [NSArray arrayWithObjects:@"分析报告",@"交易建议", nil];//推送5
     NSArray * array10 = [NSArray arrayWithObjects:@"商务合作",@"反馈", nil];//合作6
     NSArray * array11 = [NSArray arrayWithObjects:@"绑定微博", nil];//微博7
     NSArray * array12 = [NSArray arrayWithObjects:@"logout", nil];//登出8
     
-    array2 = [NSMutableArray arrayWithObjects:array4,array5,array6,array7,array8,array9,array10,array11,array12,nil];
+    array2 = [NSMutableArray arrayWithObjects:array4,array5,array6,array9,array10,array11,array12,nil];
     
     aView = [[UIView alloc] init];
     
@@ -142,12 +143,26 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    
     return [[array2 objectAtIndex:section] count];
-    
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    if (indexPath.section == 0) {
+        MAlertView * makert = [[MAlertView alloc] initWithTitle:@"密码修改" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Commit", nil];
+        
+        UITextField * oldMin = [[UITextField alloc] init];
+        UITextField * newMin = [[UITextField alloc] init];
+        UITextField * againNewMin = [[UITextField alloc] init];
+        
+        [makert addTextField:oldMin placeHolder:@"输入旧密码"];
+        [makert addTextField:newMin placeHolder:@"输入新密码"];
+        [makert addTextField:againNewMin placeHolder:@"再次输入新密码"];
+        
+        [makert show];
+    }
+    
+    
     if (indexPath.row==0&&indexPath.section == 1) {
         NSLog(@"bright");
         style = @"bright";
@@ -166,19 +181,33 @@
         
         [self performSelector:@selector(viewWillAppear:)];
         
-    }if (indexPath.section==4) {
-        FileSelectViewController *aviewc=[[FileSelectViewController alloc]init];
-        [self.navigationController pushViewController:aviewc animated:YES];
+    }else if (indexPath.section == 4) 
+    {
+        if (indexPath.row == 0) 
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://02168600060"]]];
+        }else if (indexPath.row == 1) 
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.appstore.com/"]];
+        }
     }
+    
+    
+    
+//    if (indexPath.section==4) 
+//    {
+//        FileSelectViewController *aviewc=[[FileSelectViewController alloc]init];
+//        [self.navigationController pushViewController:aviewc animated:YES];
+//    }
     //6合作和反馈
-    if (indexPath.section==6&&indexPath.row==1) {
-        //[[UIApplicationsharedApplication]openURL:[NSURLURLWithString:@"http://itunesconnect.apple.com"]];
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.appstore.com/"]];
-        
-    }
+//    if (indexPath.section==6&&indexPath.row==1) {
+//        //[[UIApplicationsharedApplication]openURL:[NSURLURLWithString:@"http://itunesconnect.apple.com"]];
+//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.appstore.com/"]];
+//        
+//    }
     //
-    if (indexPath.section==7) {
-        
+    if (indexPath.section==5) 
+    {
         NSString *string_bangding=[user objectForKey:@"markstring"];
         
         if ([weiBoEngine isLoggedIn] && ![weiBoEngine isAuthorizeExpired])//判断微博是不是登录且没有推出，并且授权没有过期；如果微博登录过没有推出且授权没有过期执行语句体,切换根视图 
@@ -209,14 +238,14 @@
         
     }
     
-    if (indexPath.section==8) {
+    if (indexPath.section==6) {
         [self performSelector:@selector(logout)];
     }
-    if (indexPath.section==3) {
-        ProductSelectViewController *aviewC=[[ProductSelectViewController alloc]init];
-        
-        [self.navigationController pushViewController:aviewC animated:NO];
-    }
+//    if (indexPath.section==3) {
+//        ProductSelectViewController *aviewC=[[ProductSelectViewController alloc]init];
+//        
+//        [self.navigationController pushViewController:aviewC animated:NO];
+//    }
     
     
 }

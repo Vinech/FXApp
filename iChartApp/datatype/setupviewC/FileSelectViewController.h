@@ -14,4 +14,5 @@
 }
 @property(strong,nonatomic)NSString *string_yanse;
 @property(strong,nonatomic)NSString *string_color;
+-(void)complete;
 @end

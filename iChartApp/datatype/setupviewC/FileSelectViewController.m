@@ -36,18 +36,28 @@
         NSString *stringduigou=[array_duigou objectAtIndex:i];
         mark[[stringduigou intValue]]=1;
     }
-[self viewDidLoad ];
+    [self viewDidLoad ];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"zoule zhegefangfa");
-//        string_yanse=@"dark";
-//        string_color=@"dark";
-//    }else {
-//        string_color=[[NSString alloc] initWithFormat:string_yanse];
-//        NSLog(@"%@");
-//    }
+    
+    UIBarButtonItem * backbtn = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStyleDone target:self action:@selector(backbtn)];
+    self.navigationItem.leftBarButtonItem = backbtn;
+    
+    
+    UISegmentedControl * segmentC = [[UISegmentedControl alloc]initWithItems:[NSArray arrayWithObjects:@"产品设置",@"字段设置", nil]];
+    segmentC.frame = CGRectMake(0, 3, 120,30);               
+    segmentC.segmentedControlStyle = UISegmentedControlStyleBar;
+    segmentC.momentary = NO;    //设置在点击后是否恢复原样 
+    segmentC.multipleTouchEnabled=YES;  //可触摸
+    segmentC.tintColor = [UIColor blackColor];
+    [segmentC addTarget:self action:@selector(mySegment:) forControlEvents:UIControlEventValueChanged];
+    //  UIBarButtonItem *segButton = [[UIBarButtonItem alloc] initWithCustomView:segmentC];
+    UIBarButtonItem *segButton = [[UIBarButtonItem alloc] initWithCustomView:segmentC];
+    self.navigationItem.rightBarButtonItem=segButton;
+    
+    
     NSUserDefaults *user=[NSUserDefaults standardUserDefaults];
     self.string_color=[user objectForKey:@"style"];
     
@@ -60,8 +70,8 @@
     tableview_file.backgroundColor=[UIColor clearColor];
     array_ziduan=[[NSArray alloc]initWithObjects:@"报价",@"最高",@"最低",@"涨跌幅",@"最后更新",nil];
     
-    UIBarButtonItem *completebtn=[[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(complete)];
-    self.navigationItem.rightBarButtonItem=completebtn;	// Do any additional setup after loading the view.
+    //    UIBarButtonItem *completebtn=[[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(complete)];
+    //    self.navigationItem.rightBarButtonItem=completebtn;	// Do any additional setup after loading the view.
     if ([self.string_color isEqualToString:@"dark"]) {
         aview.backgroundColor=[UIColor blackColor];
     }else {
@@ -83,12 +93,7 @@
     for (UIView *aView in cell.contentView.subviews) {
         [aView removeFromSuperview];
     }
-
-//    UILabel *label_=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
-//    label_.text=[array_ziduan objectAtIndex:indexPath.row];
-//    label_.textAlignment=UITextAlignmentCenter;
-//    [cell.contentView addSubview:label_];
-//   
+    
     cell.backgroundColor=[UIColor clearColor];
     cell.textLabel.backgroundColor=[UIColor clearColor];
     cell.textLabel.textAlignment=UITextAlignmentLeft;
@@ -148,9 +153,84 @@
         
         NSLog(@"rember=%@",[array_rember objectAtIndex:i]);
     }
-    [self.navigationController popViewControllerAnimated:YES ];
 }
-
+#pragma mark - UISegmentedControl
+- (void)mySegment:(UISegmentedControl *)sender
+{
+    switch (sender.selectedSegmentIndex) {
+        case 0:
+        {
+            NSLog(@"当前是设置产品");
+            NSLog(@"chengong!");
+            [array_rember removeAllObjects];
+            NSUserDefaults *user_markduigou=[NSUserDefaults standardUserDefaults];
+            NSMutableArray *array_markduigou=[[NSMutableArray alloc]init];
+            array_rember=[[NSMutableArray alloc]init];
+            for (int i=0; i<5; i++) {
+                if (mark[i]==1) {
+                    [array_rember addObject:[array_ziduan objectAtIndex:i]];
+                    NSString *string_duigou=[NSString stringWithFormat:@"%d",i];
+                    [array_markduigou addObject:string_duigou];
+                }
+            }
+            [user_markduigou setObject:array_markduigou forKey:@"markduigou"];
+            [user_markduigou synchronize];
+            
+            NSUserDefaults *user_ziduan=[NSUserDefaults standardUserDefaults];
+            [user_ziduan setObject:array_rember forKey:@"ziduan" ];
+            [user_ziduan synchronize ];
+            NSLog(@"count%d",[array_rember count]);
+            
+            for(int i=0;i<[array_rember count];i++)
+            {
+                
+                NSLog(@"rember=%@",[array_rember objectAtIndex:i]);
+            }
+            
+            [self.navigationController popViewControllerAnimated:NO];
+            
+            
+        }
+            break;
+        case 1:
+        {
+            NSLog(@"当前是设置字段");
+        }
+            break;
+            
+            
+        default:
+            break;
+    }
+}
+-(void)backbtn{
+    NSLog(@"chengong!");
+    [array_rember removeAllObjects];
+    NSUserDefaults *user_markduigou=[NSUserDefaults standardUserDefaults];
+    NSMutableArray *array_markduigou=[[NSMutableArray alloc]init];
+    array_rember=[[NSMutableArray alloc]init];
+    for (int i=0; i<5; i++) {
+        if (mark[i]==1) {
+            [array_rember addObject:[array_ziduan objectAtIndex:i]];
+            NSString *string_duigou=[NSString stringWithFormat:@"%d",i];
+            [array_markduigou addObject:string_duigou];
+        }
+    }
+    [user_markduigou setObject:array_markduigou forKey:@"markduigou"];
+    [user_markduigou synchronize];
+    
+    NSUserDefaults *user_ziduan=[NSUserDefaults standardUserDefaults];
+    [user_ziduan setObject:array_rember forKey:@"ziduan" ];
+    [user_ziduan synchronize ];
+    NSLog(@"count%d",[array_rember count]);
+    
+    for(int i=0;i<[array_rember count];i++)
+    {
+        
+        NSLog(@"rember=%@",[array_rember objectAtIndex:i]);
+    }
+    [self.navigationController popViewControllerAnimated:NO ];
+}
 - (void)viewDidUnload
 {
     [super viewDidUnload];

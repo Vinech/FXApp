@@ -16,5 +16,5 @@
     int mark[20][100];
     
 }
-
+-(void)complete;
 @end

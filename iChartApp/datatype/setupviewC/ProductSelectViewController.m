@@ -7,7 +7,7 @@
 //
 
 #import "ProductSelectViewController.h"
-
+#import "FileSelectViewController.h"
 @interface ProductSelectViewController (){
     UIView *aview;
     CGRect rect_aview;
@@ -57,7 +57,7 @@
     NSMutableArray *array_1=[user_123 objectForKey:@"wai"];
     NSMutableArray *array_2=[user_123 objectForKey:@"gui"];
     NSMutableArray *array_3=[user_123 objectForKey:@"zhi"];
-
+    
     NSLog(@"array_1 count === %d",[array_1 count]);
     for (int i=0; i<[array_1 count]; i++) {
         NSString *string1=[NSString stringWithFormat:[array_1 objectAtIndex:i]];
@@ -71,11 +71,23 @@
         NSString *string3=[NSString stringWithFormat:[array_3 objectAtIndex:i]];
         mark[2][[string3 intValue]]=1;
     }
-
+    
     
 }
 - (void)viewDidLoad
 {
+    
+    
+    
+    UISegmentedControl * segmentC = [[UISegmentedControl alloc]initWithItems:[NSArray arrayWithObjects:@"产品设置",@"字段设置", nil]];
+    segmentC.frame = CGRectMake(0, 3, 120,30);               
+    segmentC.segmentedControlStyle = UISegmentedControlStyleBar;
+    segmentC.momentary = NO;    //设置在点击后是否恢复原样 
+    segmentC.multipleTouchEnabled=YES;  //可触摸
+    segmentC.tintColor = [UIColor blackColor];
+    [segmentC addTarget:self action:@selector(mySegment:) forControlEvents:UIControlEventValueChanged];
+    UIBarButtonItem *segButton = [[UIBarButtonItem alloc] initWithCustomView:segmentC];
+    self.navigationItem.rightBarButtonItem=segButton;
     
     if (string==nil) {
         string=@"dark";
@@ -99,8 +111,8 @@
     UIBarButtonItem * backbtn = [[UIBarButtonItem alloc] initWithTitle:popTitle style:UIBarButtonItemStyleDone target:self action:@selector(backbtn)];
     self.navigationItem.leftBarButtonItem = backbtn;
     
-    UIBarButtonItem *completebtn=[[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(complete)];
-    self.navigationItem.rightBarButtonItem=completebtn;
+    //    UIBarButtonItem *completebtn=[[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(complete)];
+    //    self.navigationItem.rightBarButtonItem=completebtn;
     
     tableview_product=[[UITableView alloc]initWithFrame:rect_tableview style:UITableViewStyleGrouped];
     array_section=[[NSArray alloc]initWithObjects:@"外汇",@"贵金属",@"指数", nil];    
@@ -224,15 +236,14 @@
 #pragma 返回到设置界面
 -(void)backbtn{
     // MarketViewController *aview=[[MarketViewController alloc]init];
-    [self.navigationController popViewControllerAnimated:YES];
     
-}
-
--(void)complete
-{
     NSMutableArray *array_wai=[[NSMutableArray alloc]init];
     NSMutableArray *array_gui=[[NSMutableArray alloc]init];
     NSMutableArray *array_zhi=[[NSMutableArray alloc]init];
+    [arraywaihui removeAllObjects];
+    [arrayguijinshu removeAllObjects];
+    [arrayzhishu removeAllObjects];
+    
     
     for (int i=0; i<3; i++) {
         for (int j=0; j<30; j++) {
@@ -284,13 +295,173 @@
     user_exponent=[NSUserDefaults standardUserDefaults];
     [user_exponent setObject:arrayzhishu forKey:@"exponent"];
     [user_exponent synchronize];
-    [self.navigationController popViewControllerAnimated:YES];
     
     NSUserDefaults *user_3=[NSUserDefaults standardUserDefaults];
     [user_3 setObject:array_wai forKey:@"wai"];
     [user_3 setObject:array_gui forKey:@"gui"];
     [user_3 setObject:array_zhi forKey:@"zhi"];
     [user_3 synchronize];
+    
+    // [self dismissModalViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
+
+//-(void)complete
+//{
+//    NSMutableArray *array_wai=[[NSMutableArray alloc]init];
+//    NSMutableArray *array_gui=[[NSMutableArray alloc]init];
+//    NSMutableArray *array_zhi=[[NSMutableArray alloc]init];
+//    
+//    for (int i=0; i<3; i++) {
+//        for (int j=0; j<30; j++) {
+//            NSLog(@"%d",mark[i][j]);
+//            
+//            switch (i) {
+//                case 0:
+//                    if (mark[0][j]) {
+//                        [arraywaihui addObject:[array_forex objectAtIndex:j]];
+//                        NSString *string_wai=[NSString stringWithFormat:@"%d",j];
+//                        [array_wai addObject:string_wai];
+//                        
+//                    }
+//                    break;
+//                    
+//                case 1:
+//                    if (mark[1][j]) {
+//                        [arrayguijinshu addObject:[array_preciousmetal objectAtIndex:j]];
+//                        NSString *string_gui=[[NSString alloc]initWithFormat:@"%d",j];
+//                        [array_gui addObject:string_gui];
+//                    }
+//                    break;
+//                    
+//                case 2:
+//                    if (mark[2][j]) {
+//                        [arrayzhishu addObject:[array_exponent objectAtIndex:j]];
+//                        NSString *string_zhi=[NSString stringWithFormat:@"%d",j];
+//                        [array_zhi addObject:string_zhi];
+//                    }
+//                    break;
+//                    
+//                default:
+//                    break;
+//            }
+//        }
+//        
+//    }
+//    
+//    user_forex=[NSUserDefaults standardUserDefaults];
+//    [user_forex setObject:arraywaihui forKey:@"forex"];
+//    [user_forex synchronize];
+//    NSLog(@"waihui===%@",arraywaihui);
+//    
+//    user_preciousmetal=[NSUserDefaults standardUserDefaults];
+//    [user_preciousmetal setObject:arrayguijinshu forKey:@"preciousmetal"];
+//    [user_preciousmetal synchronize];
+//    NSLog(@"GUIJINSHU===%@",arrayguijinshu);
+//    
+//    user_exponent=[NSUserDefaults standardUserDefaults];
+//    [user_exponent setObject:arrayzhishu forKey:@"exponent"];
+//    [user_exponent synchronize];
+//    
+//    NSUserDefaults *user_3=[NSUserDefaults standardUserDefaults];
+//    [user_3 setObject:array_wai forKey:@"wai"];
+//    [user_3 setObject:array_gui forKey:@"gui"];
+//    [user_3 setObject:array_zhi forKey:@"zhi"];
+//    [user_3 synchronize];
+//    
+//   // [self dismissModalViewControllerAnimated:YES];
+//
+//}
+#pragma mark - UISegmentedControl
+- (void)mySegment:(UISegmentedControl *)sender
+{
+    FileSelectViewController *fileselect=[[FileSelectViewController alloc]init];
+    switch (sender.selectedSegmentIndex) {
+        case 0:
+        {
+            NSLog(@"当前是设置产品");
+            
+        }
+            break;
+        case 1:
+        {
+            NSLog(@"当前是设置字段");
+            
+            NSMutableArray *array_wai=[[NSMutableArray alloc]init];
+            NSMutableArray *array_gui=[[NSMutableArray alloc]init];
+            NSMutableArray *array_zhi=[[NSMutableArray alloc]init];
+            [arraywaihui removeAllObjects];
+            [arrayguijinshu removeAllObjects];
+            [arrayzhishu removeAllObjects];
+            
+            
+            
+            for (int i=0; i<3; i++) {
+                for (int j=0; j<30; j++) {
+                    NSLog(@"%d",mark[i][j]);
+                    
+                    switch (i) {
+                        case 0:
+                            if (mark[0][j]) {
+                                [arraywaihui addObject:[array_forex objectAtIndex:j]];
+                                NSString *string_wai=[NSString stringWithFormat:@"%d",j];
+                                [array_wai addObject:string_wai];
+                                
+                            }
+                            break;
+                            
+                        case 1:
+                            if (mark[1][j]) {
+                                [arrayguijinshu addObject:[array_preciousmetal objectAtIndex:j]];
+                                NSString *string_gui=[[NSString alloc]initWithFormat:@"%d",j];
+                                [array_gui addObject:string_gui];
+                            }
+                            break;
+                            
+                        case 2:
+                            if (mark[2][j]) {
+                                [arrayzhishu addObject:[array_exponent objectAtIndex:j]];
+                                NSString *string_zhi=[NSString stringWithFormat:@"%d",j];
+                                [array_zhi addObject:string_zhi];
+                            }
+                            break;
+                            
+                        default:
+                            break;
+                    }
+                }
+                
+            }
+            
+            user_forex=[NSUserDefaults standardUserDefaults];
+            [user_forex setObject:arraywaihui forKey:@"forex"];
+            [user_forex synchronize];
+            NSLog(@"waihui===%@",arraywaihui);
+            
+            user_preciousmetal=[NSUserDefaults standardUserDefaults];
+            [user_preciousmetal setObject:arrayguijinshu forKey:@"preciousmetal"];
+            [user_preciousmetal synchronize];
+            NSLog(@"GUIJINSHU===%@",arrayguijinshu);
+            
+            user_exponent=[NSUserDefaults standardUserDefaults];
+            [user_exponent setObject:arrayzhishu forKey:@"exponent"];
+            [user_exponent synchronize];
+            
+            NSUserDefaults *user_3=[NSUserDefaults standardUserDefaults];
+            [user_3 setObject:array_wai forKey:@"wai"];
+            [user_3 setObject:array_gui forKey:@"gui"];
+            [user_3 setObject:array_zhi forKey:@"zhi"];
+            [user_3 synchronize];
+            [self.navigationController pushViewController:fileselect animated:NO];
+            
+        }
+            break;
+            
+            
+        default:
+            break;
+    }
 }
 
 - (void)viewDidUnload

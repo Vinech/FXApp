@@ -98,7 +98,7 @@
     //登陆
     if (!signin) {
         signin=!signin;
-       [self performSelector:@selector(login)];
+        // [self performSelector:@selector(login)];
     }
     
     //判断如果字段为空的话就等于全部的字段
@@ -138,14 +138,14 @@
     segmentC.multipleTouchEnabled=YES;  //可触摸
     segmentC.tintColor = [UIColor blackColor];
     [segmentC addTarget:self action:@selector(mySegment:) forControlEvents:UIControlEventValueChanged];
-
+    
     
     UIView *view_rightheader=[[UIView alloc]initWithFrame:CGRectMake(0, 3, 186, 40)];
     view_rightheader.backgroundColor=[UIColor clearColor];
     [view_rightheader addSubview:segmentC];
     
     UIButton *button_setup=[[UIButton alloc]initWithFrame:CGRectMake(130, 3, 40, 32)];
-   button_setup.tintColor=[UIColor blackColor];
+    button_setup.tintColor=[UIColor blackColor];
     [view_rightheader addSubview:button_setup];
     [button_setup setTitle:@"设置" forState:UIControlStateNormal];
     button_setup.titleLabel.textColor=[UIColor whiteColor];
@@ -154,12 +154,12 @@
     UIBarButtonItem *segButton = [[UIBarButtonItem alloc] initWithCustomView:view_rightheader];
     self.navigationItem.rightBarButtonItem = segButton;
     
-//    UIButton *button_logo=[[UIButton alloc]initWithFrame:CGRectMake(0, 2, 125, 30)];
-//    button_logo.multipleTouchEnabled=NO;//不可触摸
-//    button_logo.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"navilogo.png"]];
-//    //  button_logo.backgroundColor=[UIColor yellowColor];
-//    UIBarButtonItem *buttonleft=[[UIBarButtonItem alloc]initWithCustomView:button_logo];
-//    self.navigationItem.leftBarButtonItem=buttonleft;
+    //    UIButton *button_logo=[[UIButton alloc]initWithFrame:CGRectMake(0, 2, 125, 30)];
+    //    button_logo.multipleTouchEnabled=NO;//不可触摸
+    //    button_logo.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"navilogo.png"]];
+    //    //  button_logo.backgroundColor=[UIColor yellowColor];
+    //    UIBarButtonItem *buttonleft=[[UIBarButtonItem alloc]initWithCustomView:button_logo];
+    //    self.navigationItem.leftBarButtonItem=buttonleft;
     
     UIView *aview=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 480-44-48-17)];
     self.view=aview;
@@ -183,7 +183,7 @@
     scrowview_cellsc.showsHorizontalScrollIndicator=NO;
     ///newsssss/ [aview addSubview:scrowview_cellsc];
     
-
+    
     mytableview_productname.backgroundColor=[UIColor colorWithRed:20/255.0f green:20/255.0f blue:20/255.0f alpha:1.0f];
     mytableview_productdetail.backgroundColor=[UIColor colorWithRed:20/255.0f green:20/255.0f blue:20/255.0f alpha:1.0f];
     mytableview_productname.userInteractionEnabled=YES;
@@ -441,7 +441,7 @@
                     NSString *dateString = [dateFormat stringFromDate:nd];
                     lable_zhibiao.text=dateString;
                 }
-
+                
                 
                 [cell.contentView addSubview:lable_zhibiao];
                 scrowviewheader.contentSize=scrowview_cellsc.contentSize;
@@ -646,15 +646,18 @@
 
 #pragma mark-设置产品和字段
 -(void)setup{
-    //NSLog(@"setup");
-    actionsheet_setup = [[UIActionSheet alloc] initWithTitle:@"按时间查找" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"产品设置",@"字段设置",nil];
-    actionsheet_setup.frame = CGRectMake(0,300,320,160);
-    //actionsheet_setup.backgroundColor=[UIColor blackColor];
-    [[actionsheet_setup.subviews objectAtIndex:0]removeFromSuperview];
-   // actionsheet_setup.backgroundColor=[UIColor blackColor];
-
-    [actionsheet_setup showInView:self.view.window];
-
+    //    //NSLog(@"setup");
+    //    actionsheet_setup = [[UIActionSheet alloc] initWithTitle:@"按时间查找" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"产品设置",@"字段设置",nil];
+    //    actionsheet_setup.frame = CGRectMake(0,300,320,160);
+    //    //actionsheet_setup.backgroundColor=[UIColor blackColor];
+    //    [[actionsheet_setup.subviews objectAtIndex:0]removeFromSuperview];
+    //   // actionsheet_setup.backgroundColor=[UIColor blackColor];
+    //
+    //    [actionsheet_setup showInView:self.view.window];
+    ProductSelectViewController *productselect=[[ProductSelectViewController alloc]init];
+    // [self presentModalViewController:productselect animated:YES];
+    [self.navigationController pushViewController:productselect animated:YES];
+    
 }
 #pragma mark-actionsheetdelegate
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -670,7 +673,7 @@
             NSLog(@"字段设置");
             [self.navigationController pushViewController:viewCfile animated:YES];
             break;
-
+            
         case 2:
             NSLog(@"取消");
             break;
