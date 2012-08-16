@@ -40,7 +40,6 @@
     string_rember=[user_rem objectForKey:@"rem"];
     
     NSLog(@"viewdiload");
-    mark_login=0;
     data1=[[data alloc]init];
     
     UIView *aview=[[UIView alloc]initWithFrame:[UIScreen mainScreen].bounds];
@@ -236,12 +235,6 @@
             
         }
     }
-    //    if (<#condition#>) {
-    //        <#statements#>
-    //    }
-    //   [socket_login readDataWithTimeout:1000 tag:5];
-    // [socket_login readDataWithTimeout:1000 tag:3];
-    
     
 }
 
