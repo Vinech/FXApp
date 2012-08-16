@@ -1,7 +1,7 @@
 //
 //  AppDelegate.m
 //  iChartApp
-//
+//张少南修改
 //  Created by szk on 12-7-13.
 //  Copyright (c) 2012年 __Vinech__. All rights reserved.
 // 12:31 updata TCY;
