@@ -284,8 +284,8 @@
                     }
                     
                 }
-                NSLog(@"最终 %f",w);
-                NSLog(@"X游标 高度 %f ,Y游标 高度 %f",sec.frame.origin.x,sec.frame.origin.y);
+//                NSLog(@"最终 %f",w);
+//                NSLog(@"X游标 高度 %f ,Y游标 高度 %f",sec.frame.origin.x,sec.frame.origin.y);
                 //                if (label.count == 5) {
                 //                    if (sec.frame.origin.y<=120 &&sec.frame.origin.x+sec.paddingLeft+2+w<sec.frame.size.width) {
                 //                        
@@ -459,7 +459,7 @@
 }
 
 -(void)appendToData:(NSArray *)data forName:(NSString *)name{
-    NSLog(@"self.series.count = %d, data = %@ , data.count = %d , name = %@",self.series.count,data,data.count,name);
+
     for(int i=0;i<self.series.count;i++){
 		if([[[self.series objectAtIndex:i] objectForKey:@"name"] isEqualToString:name]){
 			if([[self.series objectAtIndex:i] objectForKey:@"data"] == nil){
@@ -1123,7 +1123,7 @@
 		UITouch* touch = [ts objectAtIndex:0];
         //开始的点的坐标//==========
         beginX=[touch locationInView:self].x;
-        movingX=0;
+        movingX=0;	
         //=========       
 		if([touch locationInView:self].x < 40){
 		    self.touchFlag = [touch locationInView:self].y;

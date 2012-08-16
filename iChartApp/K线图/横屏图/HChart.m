@@ -287,8 +287,8 @@
                     }
                     
                 }
-                NSLog(@"最终 %f",w);
-                NSLog(@"X游标 高度 %f ,Y游标 高度 %f",sec.frame.origin.x,sec.frame.origin.y);
+//                NSLog(@"最终 %f",w);
+//                NSLog(@"X游标 高度 %f ,Y游标 高度 %f",sec.frame.origin.x,sec.frame.origin.y);
                 //                if (label.count == 5) {
                 //                    if (sec.frame.origin.y<=120 &&sec.frame.origin.x+sec.paddingLeft+2+w<sec.frame.size.width) {
                 //                        

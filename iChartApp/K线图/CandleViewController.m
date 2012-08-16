@@ -530,7 +530,57 @@
 	[serie setObject:@"232,115,250" forKey:@"negativeSelectedColor"];
 	[series addObject:serie];
 	[secOne addObject:serie];
-	
+    
+    //**************************************************************************************************************
+    //MA60
+	serie = [[NSMutableDictionary alloc] init]; 
+	data = [[NSMutableArray alloc] init];
+	[serie setObject:@"boll_upper" forKey:@"name"];
+	[serie setObject:@"boll_upper" forKey:@"label"];
+	[serie setObject:data forKey:@"data"];
+	[serie setObject:@"line" forKey:@"type"];
+	[serie setObject:@"0" forKey:@"yAxis"];
+	[serie setObject:@"0" forKey:@"section"];
+	[serie setObject:@"250,232,115" forKey:@"color"];
+	[serie setObject:@"250,232,115" forKey:@"negativeColor"];
+	[serie setObject:@"250,232,115" forKey:@"selectedColor"];
+	[serie setObject:@"250,232,115" forKey:@"negativeSelectedColor"];
+	[series addObject:serie];
+	[secOne addObject:serie];
+    
+    //MA60
+	serie = [[NSMutableDictionary alloc] init]; 
+	data = [[NSMutableArray alloc] init];
+	[serie setObject:@"boll_value" forKey:@"name"];
+	[serie setObject:@"boll_value" forKey:@"label"];
+	[serie setObject:data forKey:@"data"];
+	[serie setObject:@"line" forKey:@"type"];
+	[serie setObject:@"0" forKey:@"yAxis"];
+	[serie setObject:@"0" forKey:@"section"];
+	[serie setObject:@"255,255,255" forKey:@"color"];
+	[serie setObject:@"255,255,255" forKey:@"negativeColor"];
+	[serie setObject:@"255,255,255" forKey:@"selectedColor"];
+	[serie setObject:@"255,255,255" forKey:@"negativeSelectedColor"];
+	[series addObject:serie];
+	[secOne addObject:serie];
+    
+    //MA60
+	serie = [[NSMutableDictionary alloc] init]; 
+	data = [[NSMutableArray alloc] init];
+	[serie setObject:@"boll_lower" forKey:@"name"];
+	[serie setObject:@"boll_lower" forKey:@"label"];
+	[serie setObject:data forKey:@"data"];
+	[serie setObject:@"line" forKey:@"type"];
+	[serie setObject:@"0" forKey:@"yAxis"];
+	[serie setObject:@"0" forKey:@"section"];
+	[serie setObject:@"232,115,250" forKey:@"color"];
+	[serie setObject:@"232,115,250" forKey:@"negativeColor"];
+	[serie setObject:@"232,115,250" forKey:@"selectedColor"];
+	[serie setObject:@"232,115,250" forKey:@"negativeSelectedColor"];
+	[series addObject:serie];
+	[secOne addObject:serie];
+    
+//************************************************************************************************************************************
 	
 	//VOL
 	serie = [[NSMutableDictionary alloc] init]; 
@@ -896,8 +946,53 @@
 		[dic setObject:vol forKey:@"vol"];
 		[vol release];
 		
-		//MA 10
-		NSMutableArray *ma10 = [[NSMutableArray alloc] init];
+        //EMA
+        NSMutableArray *emaArray = [[NSMutableArray alloc] init];
+        int period = 10;
+        float ema = 0.0;
+        float K =  2.0/(1.0 + period);
+        
+        for (int i = 60; i<data.count; i++) {
+ 
+            if(i == 60){
+                float sma = 0.0;
+                for(int j=i;j<i+period;j++){
+                    sma += [[[data objectAtIndex:j] objectAtIndex:1] floatValue];
+                }
+                ema = sma / period;
+            }
+            else {
+                float point =  [[[data objectAtIndex:i] objectAtIndex:1] floatValue];
+                ema = point * K + ema * (1.0 - K);
+            }
+              
+			
+            NSMutableArray *item = [[NSMutableArray alloc] init];
+            [item addObject:[@"" stringByAppendingFormat:@"%f",ema]];
+            [emaArray addObject:item];
+        }
+    
+        [dic setObject:emaArray forKey:@"ma10"];
+
+
+//		//MA 10
+//		NSMutableArray *ma10 = [[NSMutableArray alloc] init];
+//	    for(int i = 60;i < data.count;i++){
+//			float val = 0;
+//            
+//		    for(int j=i;j>i-10;j--){
+//			    val += [[[data objectAtIndex:j] objectAtIndex:1] floatValue];
+//			}
+//			val = val/10;
+//			NSMutableArray *item = [[NSMutableArray alloc] init];
+//			[item addObject:[@"" stringByAppendingFormat:@"%f",val]];
+//			[ma10 addObject:item];
+//		}
+//		[dic setObject:ma10 forKey:@"ma10"];
+//	
+        
+		//SMA 
+		NSMutableArray *sma = [[NSMutableArray alloc] init];
 	    for(int i = 60;i < data.count;i++){
 			float val = 0;
 		    for(int j=i;j>i-10;j--){
@@ -906,43 +1001,29 @@
 			val = val/10;
 			NSMutableArray *item = [[NSMutableArray alloc] init];
 			[item addObject:[@"" stringByAppendingFormat:@"%f",val]];
-			[ma10 addObject:item];
+			[sma addObject:item];
 			[item release];
 		}
-		[dic setObject:ma10 forKey:@"ma10"];
-		[ma10 release];
-		
-		//MA 30
-		NSMutableArray *ma30 = [[NSMutableArray alloc] init];
-	    for(int i = 60;i < data.count;i++){
-			float val = 0;
-		    for(int j=i;j>i-30;j--){
-			    val += [[[data objectAtIndex:j] objectAtIndex:1] floatValue];
-			}
-			val = val/30;
-			NSMutableArray *item = [[NSMutableArray alloc] init];
-			[item addObject:[@"" stringByAppendingFormat:@"%f",val]];
-			[ma30 addObject:item];
-			[item release];
-		}
-		[dic setObject:ma30 forKey:@"ma30"];
-		[ma30 release];
-		
-		//MA 60
-		NSMutableArray *ma60 = [[NSMutableArray alloc] init];
-	    for(int i = 60;i < data.count;i++){
-			float val = 0;
-		    for(int j=i;j>i-60;j--){
-			    val += [[[data objectAtIndex:j] objectAtIndex:1] floatValue];
-			}
-			val = val/60;
-			NSMutableArray *item = [[NSMutableArray alloc] init];
-			[item addObject:[@"" stringByAppendingFormat:@"%f",val]];
-			[ma60 addObject:item];
-			[item release];
-		}
-		[dic setObject:ma60 forKey:@"ma60"];
-		[ma60 release];
+		[dic setObject:sma forKey:@"ma30"];
+        
+        
+        
+        
+//		
+//		//MA 60
+//		NSMutableArray *ma60 = [[NSMutableArray alloc] init];
+//	    for(int i = 60;i < data.count;i++){
+//			float val = 0;
+//		    for(int j=i;j>i-60;j--){
+//			    val += [[[data objectAtIndex:j] objectAtIndex:1] floatValue];
+//			}
+//			val = val/60;
+//			NSMutableArray *item = [[NSMutableArray alloc] init];
+//			[item addObject:[@"" stringByAppendingFormat:@"%f",val]];
+//			[ma60 addObject:item];
+//			[item release];
+//		}
+//		[dic setObject:ma60 forKey:@"ma60"];
         
 		//RSI6
 		NSMutableArray *rsi6 = [[NSMutableArray alloc] init];
@@ -965,11 +1046,9 @@
 			NSMutableArray *item = [[NSMutableArray alloc] init];
 			[item addObject:[@"" stringByAppendingFormat:@"%f",rsi]];
 			[rsi6 addObject:item];
-			[item release];
 			
 		}
 		[dic setObject:rsi6 forKey:@"rsi6"];
-		[rsi6 release];
 		
 		//RSI12
 		NSMutableArray *rsi12 = [[NSMutableArray alloc] init];
@@ -992,10 +1071,8 @@
 			NSMutableArray *item = [[NSMutableArray alloc] init];
 			[item addObject:[@"" stringByAppendingFormat:@"%f",rsi]];
 			[rsi12 addObject:item];
-			[item release];
 		}
 		[dic setObject:rsi12 forKey:@"rsi12"];
-		[rsi12 release];
 		
 		//WR
 		NSMutableArray *wr = [[NSMutableArray alloc] init];
@@ -1017,10 +1094,8 @@
 			NSMutableArray *item = [[NSMutableArray alloc] init];
 			[item addObject:[@"" stringByAppendingFormat:@"%f",val]];
 			[wr addObject:item];
-			[item release];
 		}
 		[dic setObject:wr forKey:@"wr"];
-		[wr release];
 		
 		//KDJ
 		NSMutableArray *kdj_k = [[NSMutableArray alloc] init];
@@ -1030,7 +1105,7 @@
 		float prev_d = 50;
         float rsv = 0;
 	    for(int i = 60;i < data.count;i++){
-			float h  = [[[data objectAtIndex:i] objectAtIndex:2] floatValue];
+			float h  =[[[data objectAtIndex:i] objectAtIndex:2] floatValue];
 			float l = [[[data objectAtIndex:i] objectAtIndex:3] floatValue];
 			float c = [[[data objectAtIndex:i] objectAtIndex:1] floatValue];
 		    for(int j=i;j>i-10;j--){
@@ -1068,37 +1143,93 @@
 		[dic setObject:kdj_k forKey:@"kdj_k"];
 		[dic setObject:kdj_d forKey:@"kdj_d"];
 		[dic setObject:kdj_j forKey:@"kdj_j"];
-		[kdj_k release];
-		[kdj_d release];
-		[kdj_j release];
-		
-		//VR
-		NSMutableArray *vr = [[NSMutableArray alloc] init];
-	    for(int i = 60;i < data.count;i++){
-			float inc = 0;
-			float dec = 0;
-			float eq  = 0;
-		    for(int j=i;j>i-24;j--){
-				float o = [[[data objectAtIndex:j] objectAtIndex:0] floatValue];
-				float c = [[[data objectAtIndex:j] objectAtIndex:1] floatValue];
-                
-				if(c > o){
-				    inc += [[[data objectAtIndex:j] objectAtIndex:4] intValue];
-				}else if(c < o){
-				    dec += [[[data objectAtIndex:j] objectAtIndex:4] intValue];
-				}else{
-				    eq  += [[[data objectAtIndex:j] objectAtIndex:4] intValue];
-				}
-			}
 			
-			float val = (inc+1*eq/2)/(dec+1*eq/2);
+        
+    
+        //MOM
+		NSMutableArray *momArray = [[NSMutableArray alloc] init];
+	    for(int i = 60;i < data.count-10;i++){
+			
+		    
+            float close = [[[data objectAtIndex:i] objectAtIndex:1] floatValue];
+			float close2 =[[[data objectAtIndex:i+10] objectAtIndex:1] floatValue];
+			float mom = close*100/close2;
+
 			NSMutableArray *item = [[NSMutableArray alloc] init];
-			[item addObject:[@"" stringByAppendingFormat:@"%f",val]];
-			[vr addObject:item];
+			[item addObject:[@"" stringByAppendingFormat:@"%f",mom]];
+			[momArray addObject:item];
 			[item release];
 		}
-		[dic setObject:vr forKey:@"vr"];
-		[vr release];
+		[dic setObject:momArray forKey:@"Mom"];
+        
+        
+    
+        NSMutableArray *bollArray_upper = [[NSMutableArray alloc] init];
+        NSMutableArray *bollArray_value = [[NSMutableArray alloc] init];
+        NSMutableArray *bollArray_lower = [[NSMutableArray alloc] init];        
+        for (int i = 0; i<[sma count]; i++) {
+            
+            float sum = 0.0;
+ 			int k = i + 10 - 1;
+            float value = [[[sma objectAtIndex:i] objectAtIndex:0] floatValue];
+
+            while (k >= i) {
+				float newres = [[[data objectAtIndex:k] objectAtIndex:1] floatValue] - value;
+				sum += newres * newres;
+				k--;
+			}
+			float deviation = 2.0 * sqrt(sum / 10);
+            
+			float lower = value - deviation;
+			float upper = value + deviation;
+            
+				
+            NSMutableArray *itemU = [[NSMutableArray alloc] init];
+			[itemU addObject:[@"" stringByAppendingFormat:@"%f",upper]];
+			[bollArray_upper addObject:itemU];
+            
+            NSMutableArray *itemV = [[NSMutableArray alloc] init];
+			[itemV addObject:[@"" stringByAppendingFormat:@"%f",value]];
+			[bollArray_value addObject:itemV];
+            
+            NSMutableArray *itemL = [[NSMutableArray alloc] init];
+			[itemL addObject:[@"" stringByAppendingFormat:@"%f",lower]];
+			[bollArray_lower addObject:itemL];
+
+			
+		}
+		[dic setObject:bollArray_upper forKey:@"boll_upper"];
+		[dic setObject:bollArray_value forKey:@"boll_value"];
+		[dic setObject:bollArray_lower forKey:@"boll_lower"];
+
+            
+        
+//		//VR
+//		NSMutableArray *vr = [[NSMutableArray alloc] init];
+//	    for(int i = 60;i < data.count;i++){
+//			float inc = 0;
+//			float dec = 0;
+//			float eq  = 0;
+//		    for(int j=i;j>i-24;j--){
+//				float o = [[[data objectAtIndex:j] objectAtIndex:0] floatValue];
+//				float c = [[[data objectAtIndex:j] objectAtIndex:1] floatValue];
+//                
+//				if(c > o){
+//				    inc += [[[data objectAtIndex:j] objectAtIndex:4] intValue];
+//				}else if(c < o){
+//				    dec += [[[data objectAtIndex:j] objectAtIndex:4] intValue];
+//				}else{
+//				    eq  += [[[data objectAtIndex:j] objectAtIndex:4] intValue];
+//				}
+//			}
+//			
+//			float val = (inc+1*eq/2)/(dec+1*eq/2);
+//			NSMutableArray *item = [[NSMutableArray alloc] init];
+//			[item addObject:[@"" stringByAppendingFormat:@"%f",val]];
+//			[vr addObject:item];
+//			[item release];
+//		}
+//		[dic setObject:vr forKey:@"vr"];
         
 	}else{
 		//price 
@@ -1118,7 +1249,6 @@
 			[item release];
 		}
 		[dic setObject:vol forKey:@"vol"];
-		[vol release];
 		
 	}
 }
@@ -1135,11 +1265,17 @@
 	[self.candleChart appendToData:[dic objectForKey:@"rsi12"] forName:@"rsi12"];
 	
 	[self.candleChart appendToData:[dic objectForKey:@"wr"] forName:@"wr"];
-	[self.candleChart appendToData:[dic objectForKey:@"vr"] forName:@"vr"];
+	[self.candleChart appendToData:[dic objectForKey:@"Mom"] forName:@"Mom"];
 	
+
+    
 	[self.candleChart appendToData:[dic objectForKey:@"kdj_k"] forName:@"kdj_k"];
 	[self.candleChart appendToData:[dic objectForKey:@"kdj_d"] forName:@"kdj_d"];
 	[self.candleChart appendToData:[dic objectForKey:@"kdj_j"] forName:@"kdj_j"];
+    
+    [self.candleChart appendToData:[dic objectForKey:@"boll_upper"] forName:@"boll_upper"];
+	[self.candleChart appendToData:[dic objectForKey:@"boll_value"] forName:@"boll_value"];
+	[self.candleChart appendToData:[dic objectForKey:@"boll_lower"] forName:@"boll_lower"];
 	
 	NSMutableDictionary *serie = [self.candleChart getSerie:@"price"];
 	if(serie == nil)

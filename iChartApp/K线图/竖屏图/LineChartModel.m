@@ -16,7 +16,7 @@
 	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGContextSetShouldAntialias(context, YES);
-	CGContextSetLineWidth(context, 0.5f);
+	CGContextSetLineWidth(context, 1.0f);
 	
 	NSMutableArray *data          = [serie objectForKey:@"data"];
 	int            yAxis          = [[serie objectForKey:@"yAxis"] intValue];
