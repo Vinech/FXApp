@@ -355,29 +355,29 @@
                 //				CGContextSetRGBFillColor(context, 0/255.0f, 167/255.0f, 142/255.0f, 0.5);
                 
                 CGContextSetRGBFillColor(context,0/255.0f, 0/255.0f, 0/255.0f, 1); 
-				CGSize size = [[category objectAtIndex:chart.selectedIndex] sizeWithFont:[UIFont fontWithName:@"Helvetica" size:12.0]];
-				
-				//int x = ix+chart.plotWidth/2;
-                int x = CATEGORY_X;
-				int y = sec.frame.origin.y+sec.paddingTop-CATEGORY_Y;
-				if(x+size.width > sec.frame.size.width+sec.frame.origin.x){
-					x= x-(size.width+4);
-				}
-				CGContextFillRect (context, CGRectMake (x, y, size.width+10,size.height+2));
-                
-				CGContextSetRGBFillColor(context, 255/255.0f, 185/255.0f, 15/255.0f, 1.0);
-				[[category objectAtIndex:chart.selectedIndex] drawAtPoint:CGPointMake(x+2,y+1) withFont:[UIFont fontWithName:@"Helvetica" size:12.0]];
-                [[category objectAtIndex:chart.rangeFrom] drawAtPoint:CGPointMake(x-CATEGORY_1_X,y+CATEGORY_1_Y) withFont:[UIFont fontWithName:@"Helvetica" size:8.0]];
-                [[category objectAtIndex:chart.rangeFrom+((chart.rangeTo-chart.rangeFrom)/2)] drawAtPoint:CGPointMake(x-CATEGORY_2_X,y+CATEGORY_1_Y) withFont:[UIFont fontWithName:@"Helvetica" size:8.0]];
- 
-                if (chart.rangeTo >[category count]) {
-                    continue;
-                }else {
-                    [[category objectAtIndex:chart.rangeFrom+((chart.rangeTo-chart.rangeFrom)-1)] drawAtPoint:CGPointMake(x+CATEGORY_3_X,y+CATEGORY_1_Y) withFont:[UIFont fontWithName:@"Helvetica" size:8.0]]; 
-                    
-                }
-            
-				CGContextSetShouldAntialias(context, NO);	
+//				CGSize size = [[category objectAtIndex:chart.selectedIndex] sizeWithFont:[UIFont fontWithName:@"Helvetica" size:12.0]];
+//				
+//				//int x = ix+chart.plotWidth/2;
+//                int x = CATEGORY_X;
+//				int y = sec.frame.origin.y+sec.paddingTop-CATEGORY_Y;
+//				if(x+size.width > sec.frame.size.width+sec.frame.origin.x){
+//					x= x-(size.width+4);
+//				}
+//				CGContextFillRect (context, CGRectMake (x, y, size.width+10,size.height+2));
+//                
+//				CGContextSetRGBFillColor(context, 255/255.0f, 185/255.0f, 15/255.0f, 1.0);
+//				[[category objectAtIndex:chart.selectedIndex] drawAtPoint:CGPointMake(x+2,y+1) withFont:[UIFont fontWithName:@"Helvetica" size:12.0]];
+//                [[category objectAtIndex:chart.rangeFrom] drawAtPoint:CGPointMake(x-CATEGORY_1_X,y+CATEGORY_1_Y) withFont:[UIFont fontWithName:@"Helvetica" size:8.0]];
+//                [[category objectAtIndex:chart.rangeFrom+((chart.rangeTo-chart.rangeFrom)/2)] drawAtPoint:CGPointMake(x-CATEGORY_2_X,y+CATEGORY_1_Y) withFont:[UIFont fontWithName:@"Helvetica" size:8.0]];
+// 
+//                if (chart.rangeTo >[category count]) {
+//                    continue;
+//                }else {
+//                    [[category objectAtIndex:chart.rangeFrom+((chart.rangeTo-chart.rangeFrom)-1)] drawAtPoint:CGPointMake(x+CATEGORY_3_X,y+CATEGORY_1_Y) withFont:[UIFont fontWithName:@"Helvetica" size:8.0]]; 
+//                    
+//                }
+//            
+//				CGContextSetShouldAntialias(context, NO);	
 			}
 		}
 	}

@@ -86,8 +86,8 @@
         string_color=[NSString stringWithFormat:string_yanse];
     }
     
-    
-    backgroundViews = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 130)];
+   
+    backgroundViews = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 120)];
     
     backgroundViews.backgroundColor = [UIColor colorWithRed:20/255.0f green:20/255.0f blue:20/255.0f alpha:1.0f];
     if (upView == YES) {
@@ -110,7 +110,7 @@
     [segmentC addTarget:self action:@selector(mySegment:) forControlEvents:UIControlEventValueChanged];
     UIBarButtonItem *segButton = [[UIBarButtonItem alloc] initWithCustomView:segmentC];
     self.navigationItem.rightBarButtonItem =segButton;
-    
+        
     if (label.text!=nil) {
         [label removeFromSuperview];
     }
@@ -248,9 +248,9 @@
     self.candleChart = [[Chart alloc] init];
     self.candleChart.delegate = self;
     
-    self.hcandleChart = [[Chart alloc] init];
+    self.hcandleChart = [[HChart alloc] init];
     self.hcandleChart.delegate = self;	
-    
+  
     
     
     [self initChart];//初始化数据
@@ -433,7 +433,7 @@
 	NSMutableArray *padding = [NSMutableArray arrayWithObjects:@"20",@"20",@"20",@"20",nil];
 	[self.candleChart setPadding:padding];
     [self.hcandleChart setPadding:padding];
-    
+
 	NSMutableArray *secs = [[NSMutableArray alloc] init];
 	[secs addObject:@"4"];
 	[secs addObject:@"0"];
@@ -446,11 +446,11 @@
     
     [self.hcandleChart addSections:3 withRatios:secs];
 	[self.hcandleChart getSection:2].hidden = YES;
-    
+
     [[[self.hcandleChart sections] objectAtIndex:0] addYAxis:0];
 	[[[self.hcandleChart sections] objectAtIndex:1] addYAxis:0];
 	[[[self.hcandleChart sections] objectAtIndex:2] addYAxis:0];
-    
+
 	
 	[self.candleChart getYAxis:2 withIndex:0].baseValueSticky = NO;
 	[self.candleChart getYAxis:2 withIndex:0].symmetrical = NO;
@@ -459,7 +459,7 @@
     [self.hcandleChart getYAxis:2 withIndex:0].baseValueSticky = NO;
 	[self.hcandleChart getYAxis:2 withIndex:0].symmetrical = NO;
 	[self.hcandleChart getYAxis:0 withIndex:0].ext = 0.05;
-    
+
 	NSMutableArray *series = [[NSMutableArray alloc] init];
 	NSMutableArray *secOne = [[NSMutableArray alloc] init];
 	NSMutableArray *secTwo = [[NSMutableArray alloc] init];
@@ -551,12 +551,12 @@
 	
 	//candleChart init
     [self.candleChart setSeries:series];
-    
+
 	[[[self.candleChart sections] objectAtIndex:0] setSeries:secOne];
 	[[[self.candleChart sections] objectAtIndex:1] setSeries:secTwo];
 	[[[self.candleChart sections] objectAtIndex:2] setSeries:secThree];
 	[[[self.candleChart sections] objectAtIndex:2] setPaging:YES];
-    
+
     [self.hcandleChart setSeries:series];
 	
 	[[[self.hcandleChart sections] objectAtIndex:0] setSeries:secOne];
@@ -972,6 +972,9 @@
                         }
                         return;
                     }
+                    
+                    
+                    
                     if ([time hasSuffix:@"1130"] || [time hasSuffix:@"1500"]) {
                         if(self.tradeStatus == 1){
                             self.tradeStatus = 0;
@@ -1376,7 +1379,7 @@
         
         self.view.frame =CGRectMake(0, 0, 320,480);
         
-        self.candleChart.frame             = CGRectMake(0, 130, self.view.frame.size.width, 240);
+        self.candleChart.frame             = CGRectMake(0, 120, self.view.frame.size.width, 250);
         
         self.activity.frame                = CGRectMake(0, 0,45, 45);
         

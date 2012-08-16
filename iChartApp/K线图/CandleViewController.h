@@ -27,7 +27,7 @@
     
 	
     Chart *candleChart;
-    Chart *hcandleChart;
+    HChart *hcandleChart;
     
 	UITableView *autoCompleteView;
     
@@ -81,14 +81,15 @@
     
     BOOL HUDTime;
     BOOL upView;
-    
+    int background_views_width;
+    int background_views_height;
 }
 @property(nonatomic,assign) int biaoji;//由首页推过来的时候的tableview的indexpath.row
 @property(strong,nonatomic)NSMutableArray *array_pro;//用来接收由首页传过来的所有产品的名字
 
 @property (nonatomic,strong)  UIView *viewHUB;//大背景
 @property (nonatomic,strong)  UIView *viewBack;//小背景（放菊花用的）
-@property (nonatomic,strong) UIActivityIndicatorView *activity;//小菊花
+@property (nonatomic,strong)  UIActivityIndicatorView *activity;//小菊花
 @property (nonatomic,strong)  UIImageView *imageBack;//X子的view
 @property (nonatomic,strong)  UIButton *backButton;//点击X退回上个界面
 
@@ -144,7 +145,7 @@
 //********************初始化横竖屏********************************************
 
 @property (nonatomic,strong) Chart *candleChart;//竖屏
-@property (nonatomic,strong) Chart *hcandleChart;//横屏
+@property (nonatomic,strong) HChart *hcandleChart;//横屏
 
 //**************************************************************************
 

@@ -38,6 +38,7 @@
 @synthesize timeTitle;
 @synthesize charts;
 @synthesize delegate;
+
 -(float)getLocalY:(float)val withSection:(int)sectionIndex withAxis:(int)yAxisIndex{
 	Section *sec = [[self sections] objectAtIndex:sectionIndex];
 	YAxis *yaxis = [sec.yAxises objectAtIndex:yAxisIndex];
@@ -258,10 +259,11 @@
 				CGContextSetShouldAntialias(context, YES);
 				CGContextSetRGBFillColor(context, [[colors objectAtIndex:0] floatValue], [[colors objectAtIndex:1] floatValue], [[colors objectAtIndex:2] floatValue], 1.0);
                 
-                if (sec.frame.origin.x+sec.paddingLeft+2+w<sec.frame.size.width || sec.frame.origin.y>=120) {
+                
+                if (sec.frame.origin.x+sec.paddingLeft+2+w<sec.frame.size.width+20 && sec.frame.origin.y<=119.5 ) {
                     
                     int a;
-                    if (sec.frame.origin.y>=120) {
+                    if (sec.frame.origin.y>=119.5) {
                         a = sec.frame.origin.y+25;
                         [text drawAtPoint:CGPointMake(sec.frame.origin.x-10+sec.paddingLeft+2+w,sec.frame.origin.y+5) withFont:[UIFont systemFontOfSize: 10]];
                     }
@@ -269,15 +271,10 @@
                         [text drawAtPoint:CGPointMake(sec.frame.origin.x-10+sec.paddingLeft+2+w,0) withFont:[UIFont systemFontOfSize: 10]];
                         
                     }
-                    //                    [text drawAtPoint:CGPointMake(sec.frame.origin.x-5+sec.paddingLeft+2+w,a) withFont:[UIFont systemFontOfSize: 12]];
-                    
-                    //                        [text drawAtPoint:CGPointMake(sec.frame.origin.x-5+sec.paddingLeft+2+w,a-20) withFont:[UIFont systemFontOfSize: 12]];
-                    //nima lebi  de schou shabi 
-                    
-                    
                     
                 }
                 else{
+                    
                     if (w-sec.frame.origin.x-sec.paddingLeft-sec.paddingLeft-sec.frame.origin.x<=-104) {
                         [text drawAtPoint:CGPointMake(w-sec.frame.origin.x-sec.paddingLeft-sec.paddingLeft-sec.frame.origin.x+25,sec.frame.origin.y-5) withFont:[UIFont systemFontOfSize: 10]];
                         
@@ -287,11 +284,17 @@
                     }
                     
                 }
-                NSLog(@"最终 %f",w-sec.frame.origin.x-sec.paddingLeft-sec.paddingLeft-sec.frame.origin.x);
+                NSLog(@"最终 %f",w);
                 NSLog(@"X游标 高度 %f ,Y游标 高度 %f",sec.frame.origin.x,sec.frame.origin.y);
+                //                if (label.count == 5) {
+                //                    if (sec.frame.origin.y<=120 &&sec.frame.origin.x+sec.paddingLeft+2+w<sec.frame.size.width) {
+                //                        
+                //                        [text drawAtPoint:CGPointMake(sec.frame.origin.x+sec.paddingLeft+2+w,sec.frame.origin.y) withFont:[UIFont systemFontOfSize: 10]];
+                //                        NSLog(@"12312312312321321312312312323456789");
+                //                    }  
+                //                }
                 
-                
-				w += [text sizeWithFont:[UIFont systemFontOfSize:12.5]].width;
+                w+= [text sizeWithFont:[UIFont systemFontOfSize:10.5]].width;
 			}
 		}
 	}
@@ -1083,7 +1086,7 @@
     
     //column
     model = [[ColumnChartModel alloc] init];    
-    //  [self addModel:model withName:@"column"];
+    //    [self addModel:model withName:@"column"];
     
     //candle
     model = [[CandleChartModel alloc] init];

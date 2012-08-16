@@ -197,7 +197,7 @@
         
         NSMutableDictionary *tmp = [[NSMutableDictionary alloc] init];
         NSMutableString *l = [[NSMutableString alloc] init];
-        [l appendFormat:@"Open:%.2f",open];
+        [l appendFormat:@"O:%.5f",open];
         [tmp setObject:l forKey:@"text"];
         
         NSMutableString *clr = [[NSMutableString alloc] init];
@@ -210,7 +210,7 @@
         
         tmp = [[NSMutableDictionary alloc] init];
         l = [[NSMutableString alloc] init];
-        [l appendFormat:@"Close:%.2f",close];
+        [l appendFormat:@"C:%.5f",close];
         [tmp setObject:l forKey:@"text"];
         
         clr = [[NSMutableString alloc] init];
@@ -235,7 +235,7 @@
         
         tmp = [[NSMutableDictionary alloc] init];
         l = [[NSMutableString alloc] init];
-        [l appendFormat:@"High:%.2f",high];
+        [l appendFormat:@"H:%.5f",high];
         [tmp setObject:l forKey:@"text"];
         
         clr = [[NSMutableString alloc] init];
@@ -254,7 +254,7 @@
         
         tmp = [[NSMutableDictionary alloc] init];
         l = [[NSMutableString alloc] init];
-        [l appendFormat:@"Low:%.2f ",low];
+        [l appendFormat:@"L:%.5f ",low];
         [tmp setObject:l forKey:@"text"];
         
         clr = [[NSMutableString alloc] init];
@@ -278,7 +278,7 @@
         
         tmp = [[NSMutableDictionary alloc] init];
         l = [[NSMutableString alloc] init];
-        [l appendFormat:@"Change:%.2f%@  ",inc,@"%"];
+        [l appendFormat:@"Change:%.5f%@  ",inc,@"%"];
         [tmp setObject:l forKey:@"text"];
         
         clr = [[NSMutableString alloc] init];
@@ -356,38 +356,30 @@
                 			//	CGContextSetRGBFillColor(context, 0/255.0f, 167/255.0f, 142/255.0f, 0.5);
 
                 CGContextSetRGBFillColor(context,0/255.0f, 0/255.0f, 0/255.0f, 1); 
-				CGSize size = [[category objectAtIndex:chart.selectedIndex] sizeWithFont:[UIFont fontWithName:@"Helvetica" size:12.0]];
+				//CGSize size = [[category objectAtIndex:chart.selectedIndex] sizeWithFont:[UIFont fontWithName:@"Helvetica" size:12.0]];
 				
 				//int x = ix+chart.plotWidth/2;
-                int x = CATEGORY_X+5;
-				int y = sec.frame.origin.y+sec.paddingTop-CATEGORY_Y;
-				if(x+size.width > sec.frame.size.width+sec.frame.origin.x){
-					x= x-(size.width+4);
-				}
-				CGContextFillRect (context, CGRectMake (x, y, size.width+5,size.height+2));
-                
-				CGContextSetRGBFillColor(context, 255/255.0f, 185/255.0f, 15/255.0f, 1.0);
-				[[category objectAtIndex:chart.selectedIndex] drawAtPoint:CGPointMake(x+2,y+1) withFont:[UIFont fontWithName:@"Helvetica" size:12.0]];
-                [[category objectAtIndex:chart.rangeFrom] drawAtPoint:CGPointMake(x-CATEGORY_1_X,y+CATEGORY_1_Y) withFont:[UIFont fontWithName:@"Helvetica" size:8.0]];
-                [[category objectAtIndex:chart.rangeFrom+((chart.rangeTo-chart.rangeFrom)/2)] drawAtPoint:CGPointMake(x-CATEGORY_2_X,y+CATEGORY_1_Y) withFont:[UIFont fontWithName:@"Helvetica" size:8.0]];
-
-                // NSLog(@"from = %d,To = %d , range = %d,selectedInde = %d == %d",chart.rangeFrom ,chart.rangeTo,chart.range,chart.selectedIndex,[category count]);
-                 
-
-//                if (chart.rangeTo-chart.rangeFrom>=36) {
+//                int x = CATEGORY_X+5;
+//				int y = sec.frame.origin.y+sec.paddingTop-CATEGORY_Y;
+//				if(x+size.width > sec.frame.size.width+sec.frame.origin.x){
+//					x= x-(size.width+4);
+//				}
+//				CGContextFillRect (context, CGRectMake (x, y, size.width+5,size.height+2));
+//                
+//				CGContextSetRGBFillColor(context, 255/255.0f, 185/255.0f, 15/255.0f, 1.0);
+//				[[category objectAtIndex:chart.selectedIndex] drawAtPoint:CGPointMake(x+2,y+1) withFont:[UIFont fontWithName:@"Helvetica" size:12.0]];
+//                [[category objectAtIndex:chart.rangeFrom] drawAtPoint:CGPointMake(x-CATEGORY_1_X,y+CATEGORY_1_Y) withFont:[UIFont fontWithName:@"Helvetica" size:8.0]];
+//                [[category objectAtIndex:chart.rangeFrom+((chart.rangeTo-chart.rangeFrom)/2)] drawAtPoint:CGPointMake(x-CATEGORY_2_X,y+CATEGORY_1_Y) withFont:[UIFont fontWithName:@"Helvetica" size:8.0]];
 //
+//               
+//                if (chart.rangeTo >[category count]) {
+//                    continue;
 //                }else {
-//                   if   
-                if (chart.rangeTo >[category count]) {
-                    continue;
-                }else {
-                    [[category objectAtIndex:chart.rangeFrom+((chart.rangeTo-chart.rangeFrom)-1)] drawAtPoint:CGPointMake(x+CATEGORY_3_X,y+CATEGORY_1_Y) withFont:[UIFont fontWithName:@"Helvetica" size:8.0]]; 
-
-                }
-              //  NSLog(@"char-----%d",chart.rangeFrom+((chart.rangeTo-chart.rangeFrom)-1),chart.r);
+//                    [[category objectAtIndex:chart.rangeFrom+((chart.rangeTo-chart.rangeFrom)-1)] drawAtPoint:CGPointMake(x+CATEGORY_3_X,y+CATEGORY_1_Y) withFont:[UIFont fontWithName:@"Helvetica" size:8.0]]; 
+//
 //                }
-             
-				CGContextSetShouldAntialias(context, NO);	
+//             
+//				CGContextSetShouldAntialias(context, NO);	
 			}
 		}
 	}

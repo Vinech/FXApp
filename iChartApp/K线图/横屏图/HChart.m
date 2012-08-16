@@ -261,24 +261,43 @@
 				CGContextRef context = UIGraphicsGetCurrentContext();
 				CGContextSetShouldAntialias(context, YES);
 				CGContextSetRGBFillColor(context, [[colors objectAtIndex:0] floatValue], [[colors objectAtIndex:1] floatValue], [[colors objectAtIndex:2] floatValue], 1.0);
-                //                NSLog(@"sec.frame.size.width = %f",sec.frame.size.width);
-                if (sec.frame.origin.x+sec.paddingLeft+2+w < sec.frame.size.width+20 && sec.frame.origin.y<119.5) {
-                    
-                    [text drawAtPoint:CGPointMake(sec.frame.origin.x+sec.paddingLeft+2+w,sec.frame.origin.y-20) withFont:[UIFont systemFontOfSize: 12]];
-                    
-                }
-                else {
-                    
-                    [text drawAtPoint:CGPointMake(sec.frame.origin.x-284+sec.paddingLeft+2+w,sec.frame.origin.y-5) withFont:[UIFont systemFontOfSize: 12]];
-                    
-                }
-                // NSLog(@"X游标 高度 %f",sec.frame.origin.y);
-                if (sec.frame.origin.y>=119.5) {
-                    [text drawAtPoint:CGPointMake(sec.frame.origin.x+sec.paddingLeft+2+w,sec.frame.origin.y+5) withFont:[UIFont systemFontOfSize: 12]];
-                    
-                }
                 
-				w += [text sizeWithFont:[UIFont systemFontOfSize:12.5]].width;
+                
+                if (sec.frame.origin.x+sec.paddingLeft+2+w<sec.frame.size.width+20 && sec.frame.origin.y<=119.5 ) {
+                    
+                    int a;
+                    if (sec.frame.origin.y>=119.5) {
+                        a = sec.frame.origin.y+25;
+                        [text drawAtPoint:CGPointMake(sec.frame.origin.x-10+sec.paddingLeft+2+w,sec.frame.origin.y+5) withFont:[UIFont systemFontOfSize: 9]];
+                    }
+                    if (sec.frame.origin.y == 20) {
+                        [text drawAtPoint:CGPointMake(sec.frame.origin.x-10+sec.paddingLeft+2+w,0) withFont:[UIFont systemFontOfSize: 9]];
+                        
+                    }
+                    
+                }
+                else{
+                    
+                    if (w-sec.frame.origin.x-sec.paddingLeft-sec.paddingLeft-sec.frame.origin.x<=-104) {
+                        [text drawAtPoint:CGPointMake(w-sec.frame.origin.x-sec.paddingLeft-sec.paddingLeft-sec.frame.origin.x+25,sec.frame.origin.y-5) withFont:[UIFont systemFontOfSize: 9]];
+                        
+                    }else {
+                        [text drawAtPoint:CGPointMake(w-sec.frame.origin.x-sec.paddingLeft-sec.paddingLeft-sec.frame.origin.x,sec.frame.origin.y-5) withFont:[UIFont systemFontOfSize: 9]];
+                        
+                    }
+                    
+                }
+                NSLog(@"最终 %f",w);
+                NSLog(@"X游标 高度 %f ,Y游标 高度 %f",sec.frame.origin.x,sec.frame.origin.y);
+                //                if (label.count == 5) {
+                //                    if (sec.frame.origin.y<=120 &&sec.frame.origin.x+sec.paddingLeft+2+w<sec.frame.size.width) {
+                //                        
+                //                        [text drawAtPoint:CGPointMake(sec.frame.origin.x+sec.paddingLeft+2+w,sec.frame.origin.y) withFont:[UIFont systemFontOfSize: 10]];
+                //                        NSLog(@"12312312312321321312312312323456789");
+                //                    }  
+                //                }
+                
+                w+= [text sizeWithFont:[UIFont systemFontOfSize:9.5]].width;
 			}
 		}
 	}

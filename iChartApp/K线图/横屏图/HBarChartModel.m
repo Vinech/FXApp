@@ -315,7 +315,7 @@
 			    continue;
 			}
 			
-            //	float ix  = sec.frame.origin.x+sec.paddingLeft+(i-chart.rangeFrom)*chart.plotWidth;
+            float ix  = sec.frame.origin.x+sec.paddingLeft+(i-chart.rangeFrom)*chart.plotWidth;
 			if(i == chart.selectedIndex && chart.selectedIndex < data.count && [data objectAtIndex:chart.selectedIndex]!=nil){
 				
 				CGContextSetShouldAntialias(context, YES);
@@ -325,16 +325,19 @@
                 CGContextSetRGBFillColor(context,0/255.0f, 0/255.0f, 0/255.0f, 1); 
 				CGSize size = [[category objectAtIndex:chart.selectedIndex] sizeWithFont:[UIFont fontWithName:@"Helvetica" size:12.0]];
 				
+                int xs = ix+chart.plotWidth/2;
+				int ys = sec.frame.origin.y+sec.paddingTop-5;
+
 				//int x = ix+chart.plotWidth/2;
                 int x = CATEGORY_X;
 				int y = sec.frame.origin.y+sec.paddingTop-CATEGORY_Y;
-				if(x+size.width > sec.frame.size.width+sec.frame.origin.x){
-					x= x-(size.width+4);
+				if(xs+size.width > sec.frame.size.width+sec.frame.origin.x){
+					xs= xs-(size.width+4);
 				}
 				CGContextFillRect (context, CGRectMake (x, y, size.width+10,size.height+2));
                 
 				CGContextSetRGBFillColor(context, 255/255.0f, 185/255.0f, 15/255.0f, 1.0);
-				[[category objectAtIndex:chart.selectedIndex] drawAtPoint:CGPointMake(x+2,y+1) withFont:[UIFont fontWithName:@"Helvetica" size:12.0]];
+				[[category objectAtIndex:chart.selectedIndex] drawAtPoint:CGPointMake(xs+2,ys+1) withFont:[UIFont fontWithName:@"Helvetica" size:12.0]];
                 [[category objectAtIndex:chart.rangeFrom] drawAtPoint:CGPointMake(x-CATEGORY_1_X ,y+CATEGORY_1_Y) withFont:[UIFont fontWithName:@"Helvetica" size:8.0]];
                 [[category objectAtIndex:chart.rangeFrom+((chart.rangeTo-chart.rangeFrom)/2)] drawAtPoint:CGPointMake(x-CATEGORY_2_X,y+CATEGORY_1_Y) withFont:[UIFont fontWithName:@"Helvetica" size:8.0]];
 //                NSLog(@"from = %d,To = %d",chart.rangeFrom ,chart.rangeTo);
