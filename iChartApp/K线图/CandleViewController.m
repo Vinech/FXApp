@@ -610,158 +610,14 @@
 	[serie setObject:[options objectForKey:@"negativeSelectedColor"] forKey:@"negativeSelectedColor"];
 }
 
--(void)buttonPressed:(id)sender{
-    UIButton *btn = (UIButton *)sender;
-	int index = btn.tag;
-	
-	if(index !=2){
-		CGContextRef context = UIGraphicsGetCurrentContext();
-		[UIView beginAnimations:nil context:context];
-		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-		[UIView setAnimationDuration:0.3];
-		CGRect rect = [self.candleChartFreqView frame];
-		rect.origin.y =  self.view.frame.size.width - 40;
-		[self.candleChartFreqView setFrame:rect];
-		[UIView commitAnimations];
-	}
-	
-	if(index>=21 && index<=28){
-		for (UIView *subview in self.candleChartFreqView.subviews){
-			UIButton *btn = (UIButton *)subview;
-			btn.selected = NO;
-		}
-	}
-	btn.selected = YES;
-	
-    switch (index) {
-		case 1:{
-			UIButton *sel = (UIButton *)[self.toolBar viewWithTag:2];
-			sel.selected = NO;
-			self.chartMode  = 0;
-			self.req_freq   = @"1m";
-			self.req_type   = @"T";
-			[self getData];
-			break;
-	    }
-        case 2:{
-			UIButton *sel = (UIButton *)[self.toolBar viewWithTag:1];
-			sel.selected = NO;
-			CGContextRef context = UIGraphicsGetCurrentContext();
-			[UIView beginAnimations:nil context:context];
-			[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-			[UIView setAnimationDuration:0.3];
-			CGRect rect = [self.candleChartFreqView frame];
-			if(rect.origin.y == self.view.frame.size.width - 40){
-				rect.origin.y =  self.view.frame.size.width - 160;
-				[self.candleChartFreqView setFrame:rect];
-			}else{
-				rect.origin.y =  self.view.frame.size.width - 40;
-				[self.candleChartFreqView setFrame:rect];
-                btn.selected = NO;
-                sel.selected = NO;
-			}
-			[UIView commitAnimations];
-			break;
-		}
-        case 26:{
-			UIButton *sel = (UIButton *)[self.toolBar viewWithTag:2];
-			sel.selected = NO;
-			self.chartMode  = 1;
-			self.req_freq   = @"d";
-			self.req_type   = @"H";
-			[self getData];
-			break;
-			break;
-	    }
-		case 27:{
-			UIButton *sel = (UIButton *)[self.toolBar viewWithTag:2];
-			sel.selected = NO;
-			self.chartMode  = 1;
-			self.req_freq   = @"w";
-			self.req_type   = @"H";
-			[self getData];
-			break;
-			
-	    }
-		case 28:{
-			UIButton *sel = (UIButton *)[self.toolBar viewWithTag:2];
-			sel.selected = NO;
-			self.chartMode  = 1;
-			self.req_freq   = @"m";
-			self.req_type   = @"H";
-			[self getData];
-			break;
-			
-	    }
-		case 50:{
-			UIGraphicsBeginImageContext(self.candleChart.bounds.size);    
-			[self.candleChart.layer renderInContext:UIGraphicsGetCurrentContext()];    
-			UIImage *anImage = UIGraphicsGetImageFromCurrentImageContext();    
-			UIGraphicsEndImageContext();
-			UIImageWriteToSavedPhotosAlbum(anImage,nil,nil,nil);
-			break;
-	    }
-		default:
-			break;
-    }
-    
-}
+
 
 - (void)doNotification:(NSNotification *)notification{
-	UIButton *sel = (UIButton *)[self.toolBar viewWithTag:1];
-	[self buttonPressed:sel];
+//	UIButton *sel = (UIButton *)[self.toolBar viewWithTag:1];
+//	[self buttonPressed:sel];
 }
 
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
-	NSMutableArray *data = [self.autoCompleteDelegate.items mutableCopy];
-    self.autoCompleteDelegate.selectedItems = data;
-	[data release];
-    self.autoCompleteView.hidden = NO;
-	
-	if([self isCodesExpired]){
-	    [self getAutoCompleteData];
-	}
-	
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	[UIView beginAnimations:nil context:context];
-	[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-	[UIView setAnimationDuration:0.2];
-	CGRect rect = [self.autoCompleteView frame];
-	rect.size.height = 300;
-	[self.autoCompleteView setFrame:rect];
-	[UIView commitAnimations];
-}
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
-	[self.autoCompleteDelegate.selectedItems removeAllObjects];
-    for(NSArray *item in self.autoCompleteDelegate.items){
-	    if([[item objectAtIndex:0] hasPrefix:searchText]){
-			[self.autoCompleteDelegate.selectedItems addObject:item];
-		}
-	}
-	[self.autoCompleteView reloadData];
-}
-
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
-	CGRect rect = [self.autoCompleteView frame];
-	rect.size.height = 0;
-	[self.autoCompleteView setFrame:rect];
-	self.autoCompleteView.hidden = YES;
-    if(![searchBar.text isEqualToString:@""]){
-        self.req_security_id = [[[[[searchBar text] componentsSeparatedByString:@"（"] objectAtIndex:1] componentsSeparatedByString:@"）"] objectAtIndex:0];
-        [self getData];
-    }
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar{
-    NSLog(@"CancelButtonClicked");
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-	[searchBar resignFirstResponder];
-    self.req_security_id = [[[[[searchBar text] componentsSeparatedByString:@"（"] objectAtIndex:1] componentsSeparatedByString:@"）"] objectAtIndex:0];
-	[self getData];
-}
 
 -(BOOL)isCodesExpired{
 	NSDate *date = [NSDate date];
@@ -1018,6 +874,7 @@
     }
 }
 
+#pragma mark - 技术指标
 -(void)generateData:(NSMutableDictionary *)dic From:(NSArray *)data{
 	if(self.chartMode == 1){
 		//price 
@@ -1300,9 +1157,7 @@
 	
 }
 
-- (void)requestFailed:(ASIHTTPRequest *)request{
-	self.status.text = @"Error!";
-}
+
 
 #pragma mark - 横竖屏shouldAuto
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

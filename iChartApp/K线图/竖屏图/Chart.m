@@ -260,10 +260,10 @@
 				CGContextSetRGBFillColor(context, [[colors objectAtIndex:0] floatValue], [[colors objectAtIndex:1] floatValue], [[colors objectAtIndex:2] floatValue], 1.0);
                 
                 
-                if (sec.frame.origin.x+sec.paddingLeft+2+w<sec.frame.size.width+20 && sec.frame.origin.y<=119.5 ) {
+                if (sec.frame.origin.x+sec.paddingLeft+2+w<sec.frame.size.width+20 || sec.frame.origin.y>=120 ) {
                     
                     int a;
-                    if (sec.frame.origin.y>=119.5) {
+                    if (sec.frame.origin.y>=120) {
                         a = sec.frame.origin.y+25;
                         [text drawAtPoint:CGPointMake(sec.frame.origin.x-10+sec.paddingLeft+2+w,sec.frame.origin.y+5) withFont:[UIFont systemFontOfSize: 10]];
                     }
