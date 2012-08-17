@@ -4,7 +4,7 @@
 //
 //  Created by bin huang on 12-7-13.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
-//n时llllllln
+//n时lllllllnss
 
 #import <UIKit/UIKit.h>
 #import "GCDAsyncSocket.h"

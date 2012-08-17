@@ -4,7 +4,7 @@
 //
 //  Created by szk on 12-7-13.
 //  Copyright (c) 2012年 __Vinech__. All rights reserved.
-// 12:31 updata TCY;
+// 9：53 技术指标 TCY;
 #import "AppDelegate.h"
 #import "MarketViewController.h"
 #import "NewsAnalysisViewController.h"
