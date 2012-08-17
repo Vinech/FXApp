@@ -88,11 +88,11 @@
     }
     
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
-    array1 = [NSArray arrayWithObjects:@"密码修改",@"界面风格",@"字体",@"是否推送",@"合作",@"微博",@"Log Out", nil];
+    array1 = [NSArray arrayWithObjects:@"密码修改",@"界面风格",@"是否推送",@"合作",@"微博",@"Log Out", nil];
     
     NSArray * array4 = [NSArray arrayWithObjects:@"密码修改",nil];//密码修改0
     NSArray * array5 = [NSArray arrayWithObjects:@"Bright",@"Dark", nil];//界面风格1
-    NSArray * array6 = [NSArray arrayWithObjects:@"字体",nil];//字体2
+//    NSArray * array6 = [NSArray arrayWithObjects:@"字体",nil];//字体2
 //    NSArray * array7 = [NSArray arrayWithObjects:@"产品",nil];//产品3
 //    NSArray * array8 = [NSArray arrayWithObjects:@"字段",nil];//字段4
     NSArray * array9 = [NSArray arrayWithObjects:@"分析报告",@"交易建议", nil];//推送5
@@ -100,7 +100,7 @@
     NSArray * array11 = [NSArray arrayWithObjects:@"绑定微博", nil];//微博7
     NSArray * array12 = [NSArray arrayWithObjects:@"logout", nil];//登出8
     
-    array2 = [NSMutableArray arrayWithObjects:array4,array5,array6,array9,array10,array11,array12,nil];
+    array2 = [NSMutableArray arrayWithObjects:array4,array5,array9,array10,array11,array12,nil];
     
     aView = [[UIView alloc] init];
     
@@ -151,9 +151,16 @@
     if (indexPath.section == 0) {
         MAlertView * makert = [[MAlertView alloc] initWithTitle:@"密码修改" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Commit", nil];
         
+        
+        
+        
+        
         UITextField * oldMin = [[UITextField alloc] init];
         UITextField * newMin = [[UITextField alloc] init];
         UITextField * againNewMin = [[UITextField alloc] init];
+        oldMin.delegate = self;
+        newMin.delegate = self;
+        againNewMin.delegate = self;
         
         [makert addTextField:oldMin placeHolder:@"输入旧密码"];
         [makert addTextField:newMin placeHolder:@"输入新密码"];
@@ -181,7 +188,7 @@
         
         [self performSelector:@selector(viewWillAppear:)];
         
-    }else if (indexPath.section == 4) 
+    }else if (indexPath.section == 3) 
     {
         if (indexPath.row == 0) 
         {
@@ -206,7 +213,7 @@
 //        
 //    }
     //
-    if (indexPath.section==5) 
+    if (indexPath.section==4) 
     {
         NSString *string_bangding=[user objectForKey:@"markstring"];
         
@@ -238,7 +245,7 @@
         
     }
     
-    if (indexPath.section==6) {
+    if (indexPath.section==5) {
         [self performSelector:@selector(logout)];
     }
 //    if (indexPath.section==3) {
@@ -249,6 +256,16 @@
     
     
 }
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+
+
+
 #pragma mark-sinaweibo
 - (void)engineDidLogIn:(WBEngine *)engine{
     NSLog(@"登陆成功！");
@@ -315,46 +332,73 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:string];
         
     } 
-    //
+    if (indexPath.section == 2) 
+    {
+        UISwitch * switch1 = [[UISwitch alloc] initWithFrame:CGRectMake(200,5,50,30)];
+        [cell.contentView addSubview:switch1];
+    }else 
+    {
+        for (UIView * view in cell.contentView.subviews) 
+        {
+            [view removeFromSuperview];
+        }
+    }
     
     if ([styledangqian isEqualToString:@"dark"]) {
-        if (indexPath.section==8) {
+        if (indexPath.section==5) {
             
             //            cell.backgroundColor = [UIColor blackColor];
             //            cell.textLabel.textColor = [UIColor redColor];
-            cell.backgroundColor=[UIColor colorWithPatternImage:imagehengshuping];
-            cell.textLabel.text=@"";
+//            cell.contentView.backgroundColor=[UIColor colorWithPatternImage:imagehengshuping];
+            cell.backgroundColor = [UIColor redColor];
+            cell.contentView.backgroundColor = [UIColor redColor];
+            cell.textLabel.text=@"Log Out";
+            cell.textLabel.textAlignment = UITextAlignmentCenter;
             NSLog(@"执行了此方法，改变了横竖屏幕");
             
-        }
-        else {
-            cell.backgroundColor = [UIColor blackColor];
+        }else 
+        {
+//            cell.backgroundColor = [UIColor blackColor];
+//            cell.textLabel.textColor = [UIColor whiteColor];
+//            cell.textLabel.text = [[array2 objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+            cell.textLabel.textAlignment = UITextAlignmentLeft;
+
             cell.textLabel.textColor = [UIColor whiteColor];
             cell.textLabel.text = [[array2 objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-            
-            
-            
+            cell.contentView.backgroundColor = [UIColor blackColor];
+            cell.contentView.layer.cornerRadius = 9;
+            cell.backgroundColor = [UIColor clearColor];
         }
         
         
         
     }
     else {
-        if (indexPath.section==8) {
+        if (indexPath.section==5) {
             //           cell.backgroundColor = [UIColor whiteColor];
             //            cell.textLabel.textColor=[UIColor redColor];
-            cell.backgroundColor=[UIColor colorWithPatternImage:imagehengshuping];
-            cell.textLabel.text=@"";
+//            cell.backgroundColor=[UIColor colorWithPatternImage:imagehengshuping];
+            cell.contentView.backgroundColor = [UIColor redColor];
+            cell.backgroundColor = [UIColor redColor];
+            cell.textLabel.text=@"Log Out";
+            cell.textLabel.textAlignment = UITextAlignmentCenter;
             NSLog(@"执行了此方法，改变了横竖屏幕");
             
             
         }
         else {
-            cell.backgroundColor = [UIColor whiteColor];
-            cell.textLabel.textColor=[UIColor blackColor];
+//            cell.backgroundColor = [UIColor whiteColor];
+//            cell.textLabel.textColor=[UIColor blackColor];
+//            cell.textLabel.text = [[array2 objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+
+            
+            
+            cell.textLabel.textAlignment = UITextAlignmentLeft;
+            cell.textLabel.textColor = [UIColor whiteColor];
             cell.textLabel.text = [[array2 objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-            
-            
+            cell.textLabel.textColor = [UIColor blackColor];
+            cell.contentView.backgroundColor = [UIColor clearColor];
+            cell.backgroundColor = [UIColor whiteColor];
         }
         
         

@@ -4,10 +4,13 @@
 //
 //  Created by bin huang on 12-7-12.
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
-//sssiis
+//sssiis是
 
 #import "NewsAnalysisViewController.h"
 #import "StoryViewController.h"
+#import "NewsSearchViewController.h"
+#import "DateHelper.h"
+
 #import <QuartzCore/QuartzCore.h>
 #define kWBSDKDemoAppKey @"2131365630"
 #define kWBSDKDemoAppSecret @"9ccde1899c528308145342904dfb7b18"
@@ -19,11 +22,26 @@
     UIButton * searchDateButton;
     UILabel * label;
     UIButton *button_logo;
+    UISearchBar * seacrhView ;
+    UIBarButtonItem * cancelBar;
+    UIBarButtonItem * bar;
+    UIBarButtonItem * searchBar;
+    UIBarButtonItem *buttonleft;
+    NSArray * barArray;
+    NSArray * barArray1;
 }
+@property(nonatomic,strong)UIActivityIndicatorView * loadingIndicator;
 @end
 
 @implementation NewsAnalysisViewController
+@synthesize loadingIndicator = _loadingIndicator,searchArray = _searchArray;
 @synthesize myTableView,stringtext,dictionary_weibo;
+
+
+
+
+
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -69,6 +87,31 @@
     
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     self.navigationItem.title=nil;
+    
+    
+    UIView * seacV = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 250, 44)];
+    seacV.backgroundColor = [UIColor clearColor];
+
+    seacrhView = [[UISearchBar alloc] initWithFrame:seacV.bounds];
+    seacrhView.delegate = self;
+    seacrhView.keyboardType = UIKeyboardTypeDefault;
+    [[seacrhView.subviews objectAtIndex:0]removeFromSuperview];
+    seacrhView.placeholder = @"search...";
+    
+    [seacV addSubview:seacrhView];
+    
+    
+    self.navigationItem.title = nil;
+    bar = [[UIBarButtonItem alloc] initWithCustomView:seacV];
+    
+    cancelBar = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(searchContentText:)];
+    UIBarButtonItem * sep = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStyleDone target:self action:nil];
+    
+    barArray1 = [NSArray arrayWithObjects:cancelBar,sep,nil];
+
+    
+    
+    
     //searchbar and 选择时间
 //    view_header=[[UIView alloc]initWithFrame:CGRectMake(170, 3, 140, 40)];
 //    view_header.backgroundColor=[UIColor clearColor];
@@ -85,9 +128,10 @@
 //    
 //    UIBarButtonItem *buttonitem=[[UIBarButtonItem alloc]initWithCustomView:view_header];
 //    self.navigationItem.rightBarButtonItem=buttonitem;
-    self.navigationItem.title=@"新闻与分析";
     
-    
+    searchBar = [[UIBarButtonItem alloc] initWithTitle:@"Search" style:UIBarButtonItemStyleDone target:self action:@selector(searchContentText:)];
+    UIBarButtonItem * screeningBar = [[ UIBarButtonItem alloc] initWithTitle:@"筛选" style:UIBarButtonItemStyleDone target:self action:@selector(screeningDate:)];
+    barArray = [NSArray arrayWithObjects:searchBar,screeningBar,nil];
     
     UIView * aView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.view = aView;
@@ -96,9 +140,9 @@
     button_logo.multipleTouchEnabled=NO;//不可触摸
     button_logo.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"navilogo.png"]];
     //  button_logo.backgroundColor=[UIColor yellowColor];
-    UIBarButtonItem *buttonleft=[[UIBarButtonItem alloc]initWithCustomView:button_logo];
+     buttonleft=[[UIBarButtonItem alloc]initWithCustomView:button_logo];
     self.navigationItem.leftBarButtonItem=buttonleft;
-    
+    self.navigationItem.rightBarButtonItems = barArray;
     
     
     
@@ -158,7 +202,7 @@
     NSMutableDictionary * dic = [NSMutableDictionary dictionary];
     NSString *uid=@"2667934680";
     NSString *screen_name=@"久誉贵金属";
-    NSString *count=@"20";
+    NSString *count=@"40";
     NSString *trim_user=@"1";
     [dic setValue:engine.accessToken forKey:@"access_token"];
     [dic setValue:screen_name forKey:@"screen_name"];
@@ -186,7 +230,7 @@
             NSDictionary * dic = (NSDictionary *)result;
             [dataArr removeAllObjects];
             [dataArr addObjectsFromArray:[dic objectForKey:@"statuses"]];
-            
+            [_loadingIndicator stopAnimating];
             [self.myTableView reloadData];
             
         }
@@ -196,6 +240,7 @@
             for (int i=1; i<[array_jiazai count]; i++) {
                 [dataArr addObject:[array_jiazai objectAtIndex:i]];
                 isjiazai=NO;
+                [_loadingIndicator stopAnimating];
                 [self.myTableView reloadData];
                 
             }
@@ -212,6 +257,8 @@
 
 
 #pragma mark-searchbar
+
+/*
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     return YES;
@@ -220,6 +267,9 @@
 //    [aview_titleview removeFromSuperview];
 //    NSLog(@"quxiaofangfa");
 //}
+
+
+
 -(void)searchword{
     NSLog(@"走了这个方法");
     //[view_header removeFromSuperview];
@@ -253,9 +303,9 @@
     //[searchbar_word setShowsCancelButton:YES];
     
 }
--(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    NSLog(@"执行搜索方法");
-}
+//-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+//    NSLog(@"执行搜索方法");
+//}
 -(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar{
     NSLog(@"已经结束");
 }
@@ -274,6 +324,9 @@
     
     [actionSheet showInView:self.view.window];
 }
+ 
+ */
+ 
 #pragma mark-tableview
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -292,14 +345,11 @@
     UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:stringcell];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:stringcell];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
     }else 
     {
         for (UIView * view in cell.contentView.subviews) 
         {
-            NSLog(@"shshshshshshshshshshshs");
-
             [view removeFromSuperview];
         }
     }
@@ -307,18 +357,31 @@
     
     UILabel *labletext;
     if ([dataArr count]!=0) {
-        if (indexPath.row==[dataArr count]) {
+        if (indexPath.row==[dataArr count]) 
+        {            
+//            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            _loadingIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(260,10,24,24)];
+            _loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+            _loadingIndicator.hidden = YES;
+            _loadingIndicator.backgroundColor = [UIColor clearColor];
+//            [_loadingIndicator startAnimating];
+            _loadingIndicator.hidesWhenStopped = YES;
+        
+            
             UILabel *label_jiazai=[[UILabel alloc]initWithFrame:CGRectMake(100, 2, 120, 40)];
             label_jiazai.text=@"点击加载更多。。";
             label_jiazai.textColor=[UIColor redColor];
             label_jiazai.backgroundColor=[UIColor blackColor];
+            
             [cell.contentView addSubview:label_jiazai];
+            [cell.contentView addSubview:_loadingIndicator];
             
         }
         if (indexPath.row<[dataArr count]) {
             dictionary_weibo = [dataArr objectAtIndex:indexPath.row];//每条微博是一个字典
-            stringtext= [NSString stringWithFormat:[dictionary_weibo objectForKey:@"text"]]; 
-            NSLog(@"stringtext%@",stringtext);
+            stringtext= [NSString stringWithFormat:[dictionary_weibo objectForKey:@"text"]];
+            
+            
             UIFont *cellFont = [UIFont fontWithName:@"Helvetica" size:17.0];
             CGSize constraintSize = CGSizeMake(240.0f, MAXFLOAT);
             CGSize labelSize = [stringtext sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
@@ -405,7 +468,8 @@
 
     array_jiazai=[[NSMutableArray alloc]init];
     
-    [ajuhua stopAnimating];
+//    [ajuhua stopAnimating];
+    
 
     NSLog(@"arraycount====%d",[dataArr count]);
 }
@@ -588,15 +652,134 @@
         
         [self.navigationController pushViewController:story animated:YES];
     }
-    if (indexPath.row==[dataArr count]) {
+    if (indexPath.row==[dataArr count]) 
+    {
+        _loadingIndicator.hidden = NO;
+        [_loadingIndicator startAnimating];
         [self performSelector:@selector(jiazai)];
-        
-    }
-   
+    }  
+}
+
+#pragma mark-search
+
+-(void)searchContentText:(UIBarButtonItem *)sender
+{
+    static BOOL isSearch;
+    isSearch = !isSearch;
     
+    if (isSearch) 
+    {
+        self.navigationItem.title = nil;
+        self.navigationItem.rightBarButtonItems = barArray1;
+        self.navigationItem.leftBarButtonItem = bar;
+    }else 
+    {
+        self.navigationItem.leftBarButtonItem=buttonleft;
+        self.navigationItem.rightBarButtonItems = barArray;
+    }   
+}
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    NSLog(@"yeah");
+    return YES;
+}
+
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar1
+{
+    _searchArray = [[NSMutableArray alloc] init];
+    for (NSMutableDictionary * dic in dataArr) 
+    {
+        NSString * stringText = [dic objectForKey:@"text"];
+        NSLog(@"stringTextstringText == %@",stringText);
+        NSRange range = [stringText rangeOfString:searchBar1.text];
+        if (range.length) 
+        {
+            [self.searchArray addObject:dic];    
+        } 
+    }
+    NewsSearchViewController * search = [[NewsSearchViewController alloc] init];
+    search.dataArray = self.searchArray;
+    search.titleStr = @"Search Results";
+    
+    [self.navigationController pushViewController:search animated:YES];
+}
+
+#pragma mark-actionsheet
+
+
+-(void)screeningDate:(UIBarButtonItem *)sender
+{
+    UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:@"按时间查找" delegate:self cancelButtonTitle:@"cancel" destructiveButtonTitle:nil otherButtonTitles:@"一天前",@"一周前",@"一月前",nil];
+    
+    [actionSheet showInView:self.view.window];
     
 }
 
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSMutableArray * dayArray = [[NSMutableArray alloc] init];
+    NSMutableArray * weekArray = [[NSMutableArray alloc] init];
+    NSMutableArray * monthArray = [[NSMutableArray alloc] init];
+    NSMutableArray * nowArray = [[NSMutableArray alloc] init];
+    
+    
+    for (int i = 0;i < [dataArr count];i++) 
+    {
+//        NSDictionary *dic = [[NSDictionary alloc] init];
+//        dic = [dataArr objectAtIndex:i];
+        
+        
+        dictionary_weibo = [dataArr objectAtIndex:i];//每条微博是一个字典
+        stringtext= [NSString stringWithFormat:[dictionary_weibo objectForKey:@"text"]];
+        
+        NSString * stringstring = [dictionary_weibo objectForKey:@"created_at"];
+        
+        NSDate * theDate = [DateHelper weiboStringToDate:stringstring];
+        NSString * str1 = [DateHelper convertToReadableDate:theDate];
+        if ([str1 isEqualToString:@"1天前"]) 
+        {
+            [dayArray addObject:dictionary_weibo];
+        }else if ([str1 isEqualToString:@"1周前"]) 
+        {
+            [weekArray addObject:dictionary_weibo];
+        }else if ([str1 isEqualToString:@"1个月前"]) 
+        {
+            [monthArray addObject:dictionary_weibo];
+        }
+    }
+ 
+    NewsSearchViewController * new = [[NewsSearchViewController alloc] init];
+    
+    if (buttonIndex == 0) 
+    {
+        new.dataArray = dayArray;
+        new.titleStr = @"1天前";
+        [self.navigationController pushViewController:new animated:YES];
+        
+        
+    }else if (buttonIndex == 1) 
+    {
+        new.dataArray = weekArray;
+        new.titleStr = @"1周前";
+        [self.navigationController pushViewController:new animated:YES];
+        
+    }else if (buttonIndex == 2) 
+    {
+        new.dataArray = monthArray;
+        new.titleStr = @"1个月前";
+        [self.navigationController pushViewController:new animated:YES];
+        
+    }else if (buttonIndex == 3) 
+    {
+        new.dataArray = nowArray;
+        new.titleStr = @"刚刚";
+        [self.navigationController pushViewController:new animated:YES];
+        
+    }
+}
 
 
 

@@ -25,6 +25,17 @@
     UIView * aView;
     UISearchBar * searchBar1;
     
+    
+    UISearchBar * seacrhView ;
+    UIBarButtonItem * cancelBar;
+    UIBarButtonItem * userNameButton;
+    UIBarButtonItem * searchBar;
+    UIBarButtonItem * bar;
+//    UIBarButtonItem *buttonleft;
+    NSArray * barArray;
+    NSArray * barArray1;
+    
+    
 }
 
 
@@ -64,64 +75,98 @@
     }
     
     [super loadView];
-    self.navigationItem.title = @"";
+    
+    
+    self.navigationItem.title = nil;
+    
+    
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     aView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.view = aView;
     
     
-    UIBarButtonItem * userNameButton = [[UIBarButtonItem alloc] initWithTitle:@"信号" style:UIBarButtonItemStyleDone target:self action:nil];
+    userNameButton = [[UIBarButtonItem alloc] initWithTitle:@"信号" style:UIBarButtonItemStyleDone target:self action:nil];
     self.navigationItem.leftBarButtonItem = userNameButton;
     
     
-    UILabel * dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,320,40)];
-    dateLabel.text = @"Date:2012/6/24  TIME:12/44/12";
-    dateLabel.textAlignment = UITextAlignmentCenter;
-    dateLabel.backgroundColor = [UIColor clearColor];
-    [aView addSubview:dateLabel];
     
-    UIView * searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 40, 320,40)];
+    UIView * seacV = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 250, 44)];
+    seacV.backgroundColor = [UIColor clearColor];
     
+    seacrhView = [[UISearchBar alloc] initWithFrame:seacV.bounds];
+    seacrhView.delegate = self;
+    seacrhView.keyboardType = UIKeyboardTypeDefault;
+    [[seacrhView.subviews objectAtIndex:0] removeFromSuperview];
+    seacrhView.placeholder = @"search...";
     
-    UIButton * searchDateButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    searchDateButton.frame = CGRectMake(20,5,110,30);
-    [searchDateButton setTitle:@"时间检索" forState:UIControlStateNormal];
-    [searchDateButton addTarget:self action:@selector(searchDate) forControlEvents:UIControlEventTouchUpInside];
-    searchDateButton.layer.cornerRadius = 8;
+    [seacV addSubview:seacrhView];
     
+    bar = [[UIBarButtonItem alloc] initWithCustomView:seacV];
     
+    cancelBar = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(searchContentText:)];
     
+    UIBarButtonItem * sep = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStyleDone target:self action:nil];
     
-    
-    UIImageView * downImageVIew = [[UIImageView alloc] initWithFrame:CGRectMake(95,10,10,10)];
-    downImageVIew.image = [UIImage imageNamed:@"toggle-arrow.png"];
-    downImageVIew.backgroundColor = [UIColor clearColor];
+    barArray1 = [NSArray arrayWithObjects:cancelBar,sep,nil];
     
     
-    searchBar1 = [[UISearchBar alloc] initWithFrame:CGRectMake(150,5,170,30)];
-    searchBar1.showsCancelButton = NO;
-    searchBar1.barStyle = UIBarStyleDefault;
-    searchBar1.placeholder = @"内容检索";
-    searchBar1.delegate = self;
-    searchBar1.keyboardType = UIKeyboardTypeDefault;
-    searchBar1.backgroundColor = [UIColor clearColor];
     
-    for (UIView *subview in searchBar1.subviews)   
-    {    
-        if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")])  
-        {    
-            [subview removeFromSuperview];    
-            break;  
-        }   
-    } 
+    searchBar = [[UIBarButtonItem alloc] initWithTitle:@"Search" style:UIBarButtonItemStyleDone target:self action:@selector(searchContentText:)];
+    UIBarButtonItem * screeningBar = [[ UIBarButtonItem alloc] initWithTitle:@"筛选" style:UIBarButtonItemStyleDone target:self action:@selector(screeningDate:)];
+    barArray = [NSArray arrayWithObjects:searchBar,screeningBar,nil];
     
-    [searchView addSubview:searchBar1];
-    [aView addSubview:searchView];
-    [searchView addSubview:searchDateButton];
-    [searchDateButton addSubview:downImageVIew];    
+    self.navigationItem.rightBarButtonItems = barArray;
+    
+
+//    
+//    UILabel * dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,0,320,40)];
+//    dateLabel.text = @"Date:2012/6/24  TIME:12/44/12";
+//    dateLabel.textAlignment = UITextAlignmentCenter;
+//    dateLabel.backgroundColor = [UIColor clearColor];
+//    [aView addSubview:dateLabel];
+//    
+//    UIView * searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 40, 320,40)];
+//    
+//    
+//    UIButton * searchDateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    searchDateButton.frame = CGRectMake(20,5,110,30);
+//    [searchDateButton setTitle:@"时间检索" forState:UIControlStateNormal];
+//    [searchDateButton addTarget:self action:@selector(searchDate) forControlEvents:UIControlEventTouchUpInside];
+//    searchDateButton.layer.cornerRadius = 8;
+//    
+//    
+//    
+//    
+//    
+//    UIImageView * downImageVIew = [[UIImageView alloc] initWithFrame:CGRectMake(95,10,10,10)];
+//    downImageVIew.image = [UIImage imageNamed:@"toggle-arrow.png"];
+//    downImageVIew.backgroundColor = [UIColor clearColor];
+//    
+//    
+//    searchBar1 = [[UISearchBar alloc] initWithFrame:CGRectMake(150,5,170,30)];
+//    searchBar1.showsCancelButton = NO;
+//    searchBar1.barStyle = UIBarStyleDefault;
+//    searchBar1.placeholder = @"内容检索";
+//    searchBar1.delegate = self;
+//    searchBar1.keyboardType = UIKeyboardTypeDefault;
+//    searchBar1.backgroundColor = [UIColor clearColor];
+//    
+//    for (UIView *subview in searchBar1.subviews)   
+//    {    
+//        if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")])  
+//        {    
+//            [subview removeFromSuperview];    
+//            break;  
+//        }   
+//    } 
+//    
+//    [searchView addSubview:searchBar1];
+//    [aView addSubview:searchView];
+//    [searchView addSubview:searchDateButton];
+//    [searchDateButton addSubview:downImageVIew];    
     
     
-    scrollV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 80, 320, 480-100-44-49)];
+    scrollV = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 480-44-49)];
     scrollV.showsHorizontalScrollIndicator = YES;
     scrollV.showsVerticalScrollIndicator = NO;
     scrollV.pagingEnabled = YES;
@@ -129,7 +174,7 @@
     [scrollV setContentSize:CGSizeMake(640,0)];
     [aView addSubview:scrollV];    
     
-    tabV = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 640, 380-44-49) style:UITableViewStylePlain];
+    tabV = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 640, 460-44-49) style:UITableViewStylePlain];
     tabV.delegate = self;
     tabV.dataSource=self;
     tabV.rowHeight = 70;
@@ -151,10 +196,10 @@
     
     if ([style isEqualToString:@"dark"]) {
         aView.backgroundColor = [UIColor blackColor];
-        dateLabel.textColor = [UIColor whiteColor];
-        searchDateButton.backgroundColor = [UIColor colorWithRed:100/255.0f green:100/255.0f blue:100/255.0f alpha:1];
+//        dateLabel.textColor = [UIColor whiteColor];
+//        searchDateButton.backgroundColor = [UIColor colorWithRed:100/255.0f green:100/255.0f blue:100/255.0f alpha:1];
         tabV .backgroundColor = [UIColor blackColor];
-        searchView.backgroundColor = [UIColor blackColor];
+//        searchView.backgroundColor = [UIColor blackColor];
 
 
 
@@ -163,10 +208,10 @@
     }
     else {
         aView.backgroundColor = [UIColor whiteColor];
-        dateLabel.textColor = [UIColor blackColor];
-        searchDateButton.backgroundColor = [UIColor lightGrayColor];
+//        dateLabel.textColor = [UIColor blackColor];
+//        searchDateButton.backgroundColor = [UIColor lightGrayColor];
         tabV .backgroundColor = [UIColor whiteColor];
-        searchView.backgroundColor = [UIColor whiteColor];
+//        searchView.backgroundColor = [UIColor whiteColor];
 
 
 
@@ -311,4 +356,40 @@
     return YES;
 }
 
+
+
+
+#pragma mark-search
+
+-(void)searchContentText:(UIBarButtonItem *)sender
+{
+    static BOOL isSearch;
+    
+    isSearch = !isSearch;
+    if (isSearch) 
+    {
+        self.navigationItem.rightBarButtonItems = barArray1;
+        self.navigationItem.leftBarButtonItem = bar;
+    }else 
+    {
+        self.navigationItem.leftBarButtonItem= userNameButton;
+        self.navigationItem.rightBarButtonItems = barArray;
+    }   
+}
+
+#pragma mark-actionsheet
+
+
+-(void)screeningDate:(UIBarButtonItem *)sender
+{
+    UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:@"按时间查找" delegate:self cancelButtonTitle:@"cancel" destructiveButtonTitle:nil otherButtonTitles:@"一天前",@"一周前",@"一月前",nil];
+    
+    [actionSheet showInView:self.view.window];
+    
+}
 @end
+
+
+
+
+

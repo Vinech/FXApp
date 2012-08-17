@@ -19,7 +19,6 @@
     UIActivityIndicatorView *ajuhua;
 	BOOL _reloading;
     BOOL isjiazai;
-    UISearchBar *searchbar_word;//查询关键字
     UIView *view_header;//点击查询之前的
     UIView *aview_titleview;//点击了查询按钮之后的
     //  NSString *stringtext;
@@ -30,6 +29,7 @@
 @property(nonatomic,strong)UITableView * myTableView;
 @property(nonatomic,strong)NSString *stringtext;
 @property(nonatomic,strong)NSDictionary *dictionary_weibo;
+@property(nonatomic,strong)NSMutableArray * searchArray;
 - (void)reloadTableViewDataSource;
 - (void)doneLoadingTableViewData;
 

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "WBEngine.h"
 
-@interface SetupViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIApplicationDelegate,WBEngineDelegate,UIAlertViewDelegate>
+@interface SetupViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIApplicationDelegate,WBEngineDelegate,UIAlertViewDelegate,UITextFieldDelegate>
 {
     NSArray * array1;//section
     NSMutableArray * array2;//row
